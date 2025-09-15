@@ -1,0 +1,25 @@
+<mat-tab-group [selectedIndex]="selectedTab()" (selectedTabChange)="selectedTab.set($event.index)">
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon>list</mat-icon>
+      Spelling Lists
+    </ng-template>
+    <app-spelling-lists />
+  </mat-tab>
+
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon>play_circle</mat-icon>
+      Practice
+    </ng-template>
+    <app-spelling-practice />
+  </mat-tab>
+
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon>quiz</mat-icon>
+      Test
+    </ng-template>
+    <app-spelling-test />
+  </mat-tab>
+</mat-tab-group>

@@ -1,0 +1,18 @@
+:host {
+  display: block;
+  padding: 16px;
+}
+
+mat-tab-group {
+  margin-top: 16px;
+}
+
+::ng-deep .mat-mdc-tab-label {
+  min-width: 120px !important;
+}
+
+::ng-deep .mat-mdc-tab-label-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

@@ -1,0 +1,142 @@
+.unit-selection {
+  padding: 24px 0;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 48px 16px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.large-icon {
+  font-size: 64px;
+  width: 64px;
+  height: 64px;
+  color: rgba(0, 0, 0, 0.3);
+  margin-bottom: 16px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.practice-session {
+  padding: 16px 0;
+}
+
+.session-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.list-info h3 {
+  margin: 0 0 4px 0;
+  font-size: 20px;
+}
+
+.list-info p {
+  margin: 0;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.session-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.progress-bar {
+  margin-bottom: 32px;
+}
+
+.word-display {
+  display: flex;
+  justify-content: center;
+  margin: 32px 0;
+}
+
+.word-card {
+  text-align: center;
+  padding: 32px;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  min-width: 300px;
+  background: #fafafa;
+}
+
+.word-text {
+  font-size: 32px;
+  font-weight: 500;
+  margin-bottom: 24px;
+  color: #1976d2;
+  font-family: 'Courier New', monospace;
+}
+
+.word-placeholder {
+  padding: 24px 0;
+}
+
+.speak-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  color: rgba(0, 0, 0, 0.3);
+  margin-bottom: 16px;
+}
+
+.word-controls {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.speech-controls {
+  display: flex;
+  justify-content: center;
+  margin: 24px 0;
+}
+
+.speech-controls mat-form-field {
+  width: 200px;
+}
+
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 24px;
+  padding-top: 16px;
+}
+
+.nav-info {
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+@media (max-width: 600px) {
+  .session-header {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .session-controls {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .word-card {
+    min-width: auto;
+    width: 100%;
+  }
+
+  .word-controls {
+    flex-direction: column;
+  }
+
+  .navigation {
+    flex-direction: column;
+    gap: 16px;
+  }
+}

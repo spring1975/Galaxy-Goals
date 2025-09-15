@@ -2,7 +2,8 @@ import { Routes } from '@angular/router';
 
 import { ShellComponent } from './shell/shell.component';
 import { SpellingComponent } from './features/spelling/spelling.component';
-import { SpellingListsComponent, SpellingPracticeComponent, SpellingTestComponent } from './features/spelling/components';
+import { SpellingListsComponent, SpellingTestComponent } from './features/spelling/components';
+import { SpellingPracticeComponent } from './features/spelling/components/spelling-practice/spelling-practice.component';
 
 export const routes: Routes = [
 	{
