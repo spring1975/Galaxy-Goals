@@ -1,0 +1,22 @@
+<mat-sidenav-container class="starfield-bg">
+  <mat-sidenav #sidenav mode="side" [opened]="isSidenavOpen()">
+    <mat-toolbar color="primary">Galaxy Goals</mat-toolbar>
+    <mat-nav-list>
+      <a mat-list-item *ngFor="let item of navItems" [routerLink]="item.route">
+        <mat-icon>{{item.icon}}</mat-icon>
+        <span>{{item.label}}</span>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button mat-icon-button (click)="toggleSidenav()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span>Galaxy Goals</span>
+    </mat-toolbar>
+    <div class="shell-content">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

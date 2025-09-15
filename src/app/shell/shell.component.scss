@@ -1,0 +1,28 @@
+/* Starfield background animation */
+.starfield-bg {
+  position: relative;
+  min-height: 100vh;
+  background: #1a237e;
+  overflow: hidden;
+}
+
+.star {
+  position: absolute;
+  border-radius: 50%;
+  background: white;
+  opacity: 0.7;
+  width: 2px;
+  height: 2px;
+  animation: twinkle 2s infinite ease-in-out;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+.shell-content {
+  padding: 24px;
+}
+
+/* Optional: add more stars via JS or ::before/::after for subtle animation */
