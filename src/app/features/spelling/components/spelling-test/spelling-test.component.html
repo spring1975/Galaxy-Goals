@@ -1,0 +1,126 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Spelling Test</mat-card-title>
+    <mat-card-subtitle>Test your spelling skills</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    @if (testState() === 'setup') {
+      <!-- Test Setup -->
+      <div class="test-setup">
+        <h3>Setup Your Test</h3>
+
+        <!-- Unit Selection -->
+        @if (store.units().length === 0) {
+          <div class="empty-state">
+            <mat-icon class="large-icon">quiz</mat-icon>
+            <p>No spelling lists available. Create a list first!</p>
+          </div>
+        } @else {
+          <mat-form-field class="full-width">
+            <mat-label>Choose a spelling list</mat-label>
+            <mat-select [(value)]="selectedUnitId" (selectionChange)="updateAvailableModes()">
+              @for (unit of store.units(); track unit.id) {
+                <mat-option [value]="unit.id">
+                  {{ unit.name }} ({{ unit.words.length }} words)
+                </mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+
+          @if (selectedUnitId) {
+            <!-- Mode Selection -->
+            <div class="mode-selection">
+              <h4>Test Mode</h4>
+              <mat-radio-group [(ngModel)]="selectedMode" class="mode-options">
+                @for (mode of availableModes(); track mode.value) {
+                  <mat-radio-button [value]="mode.value" [disabled]="mode.disabled">
+                    <div class="mode-option">
+                      <strong>{{ mode.label }}</strong>
+                      <span class="mode-description">{{ mode.description }}</span>
+                    </div>
+                  </mat-radio-button>
+                }
+              </mat-radio-group>
+            </div>
+
+            <div class="start-section">
+              <button mat-raised-button
+                      color="primary"
+                      (click)="startTest()"
+                      [disabled]="!selectedUnitId || !selectedMode"
+                      class="start-button">
+                <mat-icon>play_arrow</mat-icon>
+                Start Test
+              </button>
+            </div>
+          }
+        }
+      </div>
+    }
+
+    @if (testState() === 'testing') {
+      <!-- Active Test -->
+      <div class="active-test">
+        <!-- Test Header -->
+        <div class="test-header">
+          <div class="test-info">
+            <h3>{{ selectedUnit()?.name }}</h3>
+            <p>{{ selectedMode }} Mode - Question {{ store.index() + 1 }} of {{ testWords().length }}</p>
+          </div>
+          <button mat-stroked-button (click)="stopTest()" color="warn">
+            <mat-icon>stop</mat-icon>
+            Stop Test
+          </button>
+        </div>
+
+        <mat-progress-bar
+          [value]="(store.index() / testWords().length) * 100"
+          class="progress-bar">
+        </mat-progress-bar>
+
+        <!-- Current Question -->
+        <div class="question-area">
+          <div class="question-card">
+            <div class="word-audio">
+              <button mat-fab color="primary" (click)="speakCurrentWord()" [disabled]="isSpeaking()">
+                <mat-icon>{{isSpeaking() ? 'volume_up' : 'play_arrow'}}</mat-icon>
+              </button>
+              <p>Listen and spell the word</p>
+            </div>
+
+            <form [formGroup]="answerForm" (ngSubmit)="submitAnswer()">
+              <mat-form-field class="answer-field">
+                <mat-label>Your Answer</mat-label>
+                <input matInput
+                       formControlName="answer"
+                       placeholder="Type the word you heard"
+                       autocomplete="off"
+                       spellcheck="false">
+              </mat-form-field>
+
+              <div class="question-actions">
+                <button mat-stroked-button type="button" (click)="speakCurrentWord()">
+                  <mat-icon>replay</mat-icon>
+                  Repeat
+                </button>
+                <button mat-raised-button color="primary" type="submit" [disabled]="!answerForm.value.answer?.trim()">
+                  <mat-icon>check</mat-icon>
+                  Submit
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Progress Info -->
+        <div class="progress-info">
+          <div class="score-display">
+            <span class="correct">Correct: {{ store.correct() }}</span>
+            <span class="incorrect">Incorrect: {{ store.mistakes().length }}</span>
+          </div>
+        </div>
+      </div>
+    }
+  </mat-card-content>
+</mat-card>

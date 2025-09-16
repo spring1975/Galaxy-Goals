@@ -1,0 +1,73 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Spelling Lists</mat-card-title>
+    <mat-card-subtitle>Manage your spelling word lists</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <div class="toolbar">
+      <button mat-raised-button color="primary" (click)="addUnit()">
+        <mat-icon>add</mat-icon>
+        Add New List
+      </button>
+    </div>
+
+    @if (store.units().length === 0) {
+      <div class="empty-state">
+        <mat-icon class="large-icon">spell_check</mat-icon>
+        <h3>No spelling lists yet</h3>
+        <p>Create your first spelling list to get started!</p>
+      </div>
+    } @else {
+      <mat-table [dataSource]="store.units()" class="spelling-table">
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+          <mat-header-cell *matHeaderCellDef>List Name</mat-header-cell>
+          <mat-cell *matCellDef="let unit">{{ unit.name }}</mat-cell>
+        </ng-container>
+
+        <!-- Word Count Column -->
+        <ng-container matColumnDef="wordCount">
+          <mat-header-cell *matHeaderCellDef>Words</mat-header-cell>
+          <mat-cell *matCellDef="let unit">{{ unit.words.length }} words</mat-cell>
+        </ng-container>
+
+        <!-- Recent Score Column -->
+        <ng-container matColumnDef="recentScore">
+          <mat-header-cell *matHeaderCellDef>Recent Score</mat-header-cell>
+          <mat-cell *matCellDef="let unit">
+            @if (getRecentScore(unit.id); as score) {
+              <span class="score" [class.good-score]="score >= 80" [class.poor-score]="score < 60">
+                {{ score }}%
+              </span>
+            } @else {
+              <span class="no-score">Not attempted</span>
+            }
+          </mat-cell>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+          <mat-cell *matCellDef="let unit">
+            <button mat-icon-button [routerLink]="['/spelling/practice', unit.id]" matTooltip="Practice">
+              <mat-icon>play_circle</mat-icon>
+            </button>
+            <button mat-icon-button [routerLink]="['/spelling/test', unit.id]" matTooltip="Test">
+              <mat-icon>quiz</mat-icon>
+            </button>
+            <button mat-icon-button (click)="editUnit(unit)" matTooltip="Edit">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button (click)="deleteUnit(unit)" matTooltip="Delete" color="warn">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+    }
+  </mat-card-content>
+</mat-card>

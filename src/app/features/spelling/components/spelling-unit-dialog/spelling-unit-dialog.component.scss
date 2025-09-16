@@ -1,0 +1,65 @@
+.full-width {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.words-section {
+  margin: 24px 0;
+}
+
+.words-section h3 {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.empty-words {
+  text-align: center;
+  padding: 24px;
+  color: rgba(0, 0, 0, 0.6);
+  border: 2px dashed #ddd;
+  border-radius: 8px;
+  margin: 16px 0;
+}
+
+.empty-words mat-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  color: rgba(0, 0, 0, 0.3);
+  margin-bottom: 8px;
+}
+
+.words-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 16px 0;
+  min-height: 40px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 8px;
+}
+
+.word-count {
+  margin: 8px 0 0 0;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.bulk-input-section {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid #eee;
+}
+
+.bulk-input-section h4 {
+  margin: 0 0 16px 0;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+mat-dialog-content {
+  max-height: 60vh;
+  overflow-y: auto;
+}

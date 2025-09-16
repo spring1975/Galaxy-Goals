@@ -1,0 +1,78 @@
+<h2 mat-dialog-title>{{ data.mode === 'add' ? 'Add New' : 'Edit' }} Spelling List</h2>
+
+<form [formGroup]="unitForm" (ngSubmit)="onSubmit()">
+  <mat-dialog-content>
+    <mat-form-field class="full-width">
+      <mat-label>List Name</mat-label>
+      <input matInput formControlName="name" placeholder="Enter list name">
+      @if (unitForm.get('name')?.invalid && unitForm.get('name')?.touched) {
+        <mat-error>List name is required</mat-error>
+      }
+    </mat-form-field>
+
+    <div class="words-section">
+      <h3>Words</h3>
+      <mat-form-field class="full-width">
+        <mat-label>Add Word</mat-label>
+        <input matInput
+               #wordInput
+               (keyup.enter)="addWord(wordInput.value); wordInput.value=''"
+               placeholder="Type a word and press Enter">
+        <button matSuffix
+                mat-icon-button
+                type="button"
+                (click)="addWord(wordInput.value); wordInput.value=''"
+                [disabled]="!wordInput.value.trim()">
+          <mat-icon>add</mat-icon>
+        </button>
+      </mat-form-field>
+
+      @if (words.length === 0) {
+        <div class="empty-words">
+          <mat-icon>spell_check</mat-icon>
+          <p>No words added yet. Type words above and press Enter to add them.</p>
+        </div>
+      } @else {
+        <div class="words-chips">
+          @for (word of words; track word) {
+            <mat-chip-row (removed)="removeWord(word)">
+              {{ word }}
+              <button matChipRemove>
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-chip-row>
+          }
+        </div>
+        <p class="word-count">{{ words.length }} words</p>
+      }
+    </div>
+
+    <div class="bulk-input-section">
+      <h4>Bulk Add Words</h4>
+      <mat-form-field class="full-width">
+        <mat-label>Paste Words (one per line or comma-separated)</mat-label>
+        <textarea matInput
+                  #bulkInput
+                  rows="4"
+                  placeholder="cat, dog, fish&#10;or one word per line"></textarea>
+      </mat-form-field>
+      <button mat-stroked-button
+              type="button"
+              (click)="addBulkWords(bulkInput.value); bulkInput.value=''"
+              [disabled]="!bulkInput.value.trim()">
+        <mat-icon>add_circle</mat-icon>
+        Add Words
+      </button>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button type="button" (click)="onCancel()">Cancel</button>
+    <button mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="unitForm.invalid || words.length === 0">
+      {{ data.mode === 'add' ? 'Add List' : 'Save Changes' }}
+    </button>
+  </mat-dialog-actions>
+</form>

@@ -1,0 +1,413 @@
+.results-container {.results-container {
+
+  text-align: center;  text-align: center;
+
+  padding: 16px;  padding: 16px;
+
+}}
+
+
+
+.results-header {.results-header {
+
+  margin-bottom: 32px;  margin-bottom: 32px;
+
+}}
+
+
+
+.score-circle {.score-circle {
+
+  width: 120px;  width: 120px;
+
+  height: 120px;  height: 120px;
+
+  border-radius: 50%;  border-radius: 50%;
+
+  display: flex;  display: flex;
+
+  align-items: center;  align-items: center;
+
+  justify-content: center;  justify-content: center;
+
+  margin: 0 auto 16px;  margin: 0 auto 16px;
+
+  border: 4px solid #ddd;  border: 4px solid #ddd;
+
+  background: #f5f5f5;  background: #f5f5f5;
+
+}}
+
+
+
+.score-circle.excellent {.score-circle.excellent {
+
+  border-color: #4caf50;  border-color: #4caf50;
+
+  background: #e8f5e8;  background: #e8f5e8;
+
+  color: #2e7d32;  color: #2e7d32;
+
+}}
+
+
+
+.score-circle.good {.score-circle.good {
+
+  border-color: #ff9800;  border-color: #ff9800;
+
+  background: #fff3e0;  background: #fff3e0;
+
+  color: #f57c00;  color: #f57c00;
+
+}}
+
+
+
+.score-circle.needs-improvement {.score-circle.needs-improvement {
+
+  border-color: #f44336;  border-color: #f44336;
+
+  background: #ffebee;  background: #ffebee;
+
+  color: #c62828;  color: #c62828;
+
+}}
+
+
+
+.score-number {.score-number {
+
+  font-size: 32px;  font-size: 32px;
+
+  font-weight: bold;  font-weight: bold;
+
+}}
+
+
+
+.unit-name {.unit-name {
+
+  color: rgba(0, 0, 0, 0.6);  color: rgba(0, 0, 0, 0.6);
+
+  margin: 0;  margin: 0;
+
+  font-style: italic;  font-style: italic;
+
+}}
+
+
+
+.results-summary {.results-summary {
+
+  display: flex;  display: flex;
+
+  justify-content: space-around;  justify-content: space-around;
+
+  gap: 16px;  gap: 16px;
+
+  margin-bottom: 24px;  margin-bottom: 24px;
+
+}}
+
+
+
+.stat-card {.stat-card {
+
+  display: flex;  display: flex;
+
+  flex-direction: column;  flex-direction: column;
+
+  align-items: center;  align-items: center;
+
+  padding: 16px;  padding: 16px;
+
+  border-radius: 8px;  border-radius: 8px;
+
+  min-width: 80px;  min-width: 80px;
+
+}}
+
+
+
+.correct-card {.correct-card {
+
+  background: #e8f5e8;  background: #e8f5e8;
+
+  color: #2e7d32;  color: #2e7d32;
+
+}}
+
+
+
+.incorrect-card {.incorrect-card {
+
+  background: #ffebee;  background: #ffebee;
+
+  color: #c62828;  color: #c62828;
+
+}}
+
+
+
+.total-card {.total-card {
+
+  background: #e3f2fd;  background: #e3f2fd;
+
+  color: #1976d2;  color: #1976d2;
+
+}}
+
+
+
+.stat-card mat-icon {.stat-card mat-icon {
+
+  font-size: 32px;  font-size: 32px;
+
+  width: 32px;  width: 32px;
+
+  height: 32px;  height: 32px;
+
+  margin-bottom: 8px;  margin-bottom: 8px;
+
+}}
+
+
+
+.stat-info {.stat-info {
+
+  display: flex;  display: flex;
+
+  flex-direction: column;  flex-direction: column;
+
+  align-items: center;  align-items: center;
+
+}}
+
+
+
+.stat-number {.stat-number {
+
+  font-size: 24px;  font-size: 24px;
+
+  font-weight: bold;  font-weight: bold;
+
+}}
+
+
+
+.stat-label {.stat-label {
+
+  font-size: 12px;  font-size: 12px;
+
+  text-transform: uppercase;  text-transform: uppercase;
+
+  opacity: 0.8;  opacity: 0.8;
+
+}}
+
+
+
+.mistakes-section {.mistakes-section {
+
+  margin: 24px 0;  margin: 24px 0;
+
+  text-align: left;  text-align: left;
+
+}}
+
+
+
+.mistakes-section h3 {.mistakes-section h3 {
+
+  display: flex;  display: flex;
+
+  align-items: center;  align-items: center;
+
+  gap: 8px;  gap: 8px;
+
+  margin: 0 0 8px 0;  margin: 0 0 8px 0;
+
+  color: #c62828;  color: #c62828;
+
+}}
+
+
+
+.mistakes-note {.mistakes-note {
+
+  margin: 0 0 16px 0;  margin: 0 0 16px 0;
+
+  color: rgba(0, 0, 0, 0.6);  color: rgba(0, 0, 0, 0.6);
+
+  font-size: 14px;  font-size: 14px;
+
+}}
+
+
+
+.mistakes-chips {.mistakes-chips {
+
+  display: flex;  display: flex;
+
+  flex-wrap: wrap;  flex-wrap: wrap;
+
+  gap: 8px;  gap: 8px;
+
+}}
+
+
+
+.mistake-chip {.mistake-chip {
+
+  background: #ffebee !important;  background: #ffebee !important;
+
+  color: #c62828;  color: #c62828;
+
+}}
+
+
+
+.perfect-score {.perfect-score {
+
+  margin: 24px 0;  margin: 24px 0;
+
+  color: #4caf50;  color: #4caf50;
+
+}}
+
+
+
+.perfect-icon {.perfect-icon {
+
+  font-size: 64px;  font-size: 64px;
+
+  width: 64px;  width: 64px;
+
+  height: 64px;  height: 64px;
+
+  margin-bottom: 16px;  margin-bottom: 16px;
+
+}}
+
+
+
+.performance-message {.performance-message {
+
+  margin: 24px 0;  margin: 24px 0;
+
+}}
+
+
+
+.message {.message {
+
+  display: flex;  display: flex;
+
+  align-items: center;  align-items: center;
+
+  justify-content: center;  justify-content: center;
+
+  gap: 8px;  gap: 8px;
+
+  padding: 16px;  padding: 16px;
+
+  border-radius: 8px;  border-radius: 8px;
+
+  font-weight: 500;  font-weight: 500;
+
+}}
+
+
+
+.message.excellent {.message.excellent {
+
+  background: #e8f5e8;  background: #e8f5e8;
+
+  color: #2e7d32;  color: #2e7d32;
+
+}}
+
+
+
+.message.good {.message.good {
+
+  background: #fff3e0;  background: #fff3e0;
+
+  color: #f57c00;  color: #f57c00;
+
+}}
+
+
+
+.message.needs-improvement {.message.needs-improvement {
+
+  background: #e3f2fd;  background: #e3f2fd;
+
+  color: #1976d2;  color: #1976d2;
+
+}}
+
+
+
+mat-dialog-actions {mat-dialog-actions {
+
+  margin-top: 24px;  margin-top: 24px;
+
+  padding-top: 16px;  padding-top: 16px;
+
+  border-top: 1px solid #eee;  border-top: 1px solid #eee;
+
+}}
+
+
+
+@media (max-width: 600px) {@media (max-width: 600px) {
+
+  .results-summary {  .results-summary {
+
+    flex-direction: column;    flex-direction: column;
+
+    align-items: center;    align-items: center;
+
+  }  }
+
+
+
+  .stat-card {  .stat-card {
+
+    width: 100%;    width: 100%;
+
+    max-width: 200px;    max-width: 200px;
+
+  }  }
+
+
+
+  .score-circle {  .score-circle {
+
+    width: 100px;    width: 100px;
+
+    height: 100px;    height: 100px;
+
+  }  }
+
+
+
+  .score-number {  .score-number {
+
+    font-size: 24px;    font-size: 24px;
+
+  }  }
+
+
+
+  mat-dialog-actions {  mat-dialog-actions {
+
+    flex-direction: column;    flex-direction: column;
+
+    gap: 8px;    gap: 8px;
+
+  }  }
+
+}}
