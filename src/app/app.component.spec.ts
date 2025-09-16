@@ -1,24 +1,21 @@
-import { TestBed } from '@angular/core/testing';
+import { createComponentFactory, Spectator } from '@ngneat/spectator';
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [AppComponent],
-    }).compileComponents();
+  let spectator: Spectator<AppComponent>;
+  const createComponent = createComponentFactory(AppComponent);
+
+  beforeEach(() => {
+    spectator = createComponent();
   });
 
   it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
+    const app = spectator.component;
     expect(app).toBeTruthy();
   });
 
   it(`should have the 'galaxy-goals' title`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
+    const app = spectator.component;
     expect(app.title).toEqual('galaxy-goals');
   });
-
-
 });
