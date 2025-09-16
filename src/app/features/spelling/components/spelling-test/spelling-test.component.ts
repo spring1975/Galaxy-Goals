@@ -12,8 +12,8 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatDialog } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatStepperModule } from '@angular/material/stepper';
-import { SpellingStore, SpellingUnit } from '../../state/spelling.store';
-import { SpellingResultsDialogComponent } from '../spelling-results-dialog/spelling-results-dialog.component';
+import { SpellingStore } from '../../state/spelling.store';
+import { SpellingResultsDialogComponent } from '..';
 
 type TestMode = 'RANDOM10' | 'ALL20' | 'FORM';
 
