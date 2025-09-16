@@ -1,9 +1,14 @@
 import { setupZoneTestEnv } from 'jest-preset-angular/setup-env/zone';
 
-setupZoneTestEnv({
-    errorOnUnknownElements: true,
-    errorOnUnknownProperties: true
-});
+// Skip setup when running in Wallaby environment
+if (!((global as any).__wallaby__ ||
+                  process.env['WALLABY_ENV'] === 'true' ||
+                  (global as any).wallaby)) {
+  setupZoneTestEnv({
+      errorOnUnknownElements: true,
+      errorOnUnknownProperties: true
+  });
+}
 
 Object.defineProperty(window, 'CSS', {value: null});
 Object.defineProperty(window, 'getComputedStyle', {
@@ -22,6 +27,11 @@ Object.defineProperty(document.body.style, 'transform', {
     enumerable: true,
     configurable: true
   })
+});
+
+Object.defineProperty(window, 'confirm', {
+  value: jest.fn(),
+  writable: true
 });
 
 global.console = {

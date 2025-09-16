@@ -1,6 +1,6 @@
 module.exports = {
   preset: 'jest-preset-angular',
-  testEnvironment: 'jsdom',
+  testEnvironment: '@happy-dom/jest-environment',
   setupFilesAfterEnv: ['<rootDir>/test-setup.ts'],
   testMatch: ['**/+(*.)+(spec).+(ts)'],
   transform: {
@@ -18,5 +18,5 @@ module.exports = {
   coverageDirectory: 'coverage',
   transformIgnorePatterns: [
     'node_modules/(?!.*\\.mjs$)'
-  ],
+  ]
 };

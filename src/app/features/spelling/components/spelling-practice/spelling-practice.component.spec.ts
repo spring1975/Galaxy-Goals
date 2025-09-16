@@ -1,4 +1,4 @@
-import { createComponentFactory, Spectator } from '@ngneat/spectator';
+import { createComponentFactory, Spectator } from '@ngneat/spectator/jest';
 import { SpellingPracticeComponent } from './spelling-practice.component';
 import { SpellingStore } from '../../state/spelling.store';
 
