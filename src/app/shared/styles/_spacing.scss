@@ -1,0 +1,53 @@
+// Spacing Variables
+
+// Base spacing unit
+$spacing-base: 8px;
+
+// Specific spacing values
+$spacing-xs: 4px;   // 0.5 * base
+$spacing-sm: 8px;   // 1 * base
+$spacing-md: 16px;  // 2 * base
+$spacing-lg: 24px;  // 3 * base
+$spacing-xl: 32px;  // 4 * base
+$spacing-xxl: 48px; // 6 * base
+$spacing-xxxl: 64px; // 8 * base
+
+// Margin shortcuts
+$margin-xs: $spacing-xs;
+$margin-sm: $spacing-sm;
+$margin-md: $spacing-md;
+$margin-lg: $spacing-lg;
+$margin-xl: $spacing-xl;
+$margin-xxl: $spacing-xxl;
+$margin-xxxl: $spacing-xxxl;
+
+// Padding shortcuts
+$padding-xs: $spacing-xs;
+$padding-sm: $spacing-sm;
+$padding-md: $spacing-md;
+$padding-lg: $spacing-lg;
+$padding-xl: $spacing-xl;
+$padding-xxl: $spacing-xxl;
+$padding-xxxl: $spacing-xxxl;
+
+// Gap shortcuts
+$gap-xs: $spacing-xs;
+$gap-sm: $spacing-sm;
+$gap-md: $spacing-md;
+$gap-lg: $spacing-lg;
+$gap-xl: $spacing-xl;
+
+// Border radius
+$border-radius-sm: 4px;
+$border-radius-md: 8px;
+$border-radius-lg: 12px;
+$border-radius-xl: 16px;
+$border-radius-circle: 50%;
+
+// Icon sizes
+$icon-size-sm: 24px;
+$icon-size-md: 32px;
+$icon-size-lg: 48px;
+$icon-size-xl: 64px;
+$icon-size-xxl: 96px;
+$icon-size-xxxl: 120px;

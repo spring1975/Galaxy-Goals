@@ -1,40 +1,42 @@
+@use '../../../../../variables' as *;
+
 .test-setup {
-  padding: 24px 0;
+  padding: $padding-lg 0;
 }
 
 .empty-state {
   text-align: center;
-  padding: 48px 16px;
-  color: rgba(0, 0, 0, 0.6);
+  padding: $padding-xxl $padding-md;
+  color: $color-text-secondary;
 }
 
 .large-icon {
-  font-size: 64px;
-  width: 64px;
-  height: 64px;
-  color: rgba(0, 0, 0, 0.3);
-  margin-bottom: 16px;
+  font-size: $font-size-icon-lg;
+  width: $icon-size-xl;
+  height: $icon-size-xl;
+  color: $color-text-disabled;
+  margin-bottom: $margin-md;
 }
 
 .full-width {
   width: 100%;
-  margin-bottom: 24px;
+  margin-bottom: $margin-lg;
 }
 
 .mode-selection {
-  margin: 32px 0;
+  margin: $margin-xl 0;
 }
 
 .mode-selection h4 {
-  margin: 0 0 16px 0;
-  font-size: 16px;
-  font-weight: 500;
+  margin: 0 0 $margin-md 0;
+  font-size: $font-size-base;
+  font-weight: $font-weight-medium;
 }
 
 .mode-options {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: $gap-md;
 }
 
 .mode-option {
@@ -43,118 +45,118 @@
 }
 
 .mode-description {
-  font-size: 14px;
-  color: rgba(0, 0, 0, 0.6);
-  margin-top: 4px;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  margin-top: $margin-xs;
 }
 
 .start-section {
   text-align: center;
-  margin-top: 32px;
+  margin-top: $margin-xl;
 }
 
 .start-button {
-  padding: 12px 32px;
-  font-size: 16px;
+  padding: 12px $margin-xl;
+  font-size: $font-size-base;
 }
 
 .active-test {
-  padding: 16px 0;
+  padding: $padding-md 0;
 }
 
 .test-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 16px;
+  margin-bottom: $margin-md;
 }
 
 .test-info h3 {
-  margin: 0 0 4px 0;
-  font-size: 20px;
+  margin: 0 0 $margin-xs 0;
+  font-size: $font-size-xl;
 }
 
 .test-info p {
   margin: 0;
-  color: rgba(0, 0, 0, 0.6);
+  color: $color-text-secondary;
 }
 
 .progress-bar {
-  margin-bottom: 32px;
+  margin-bottom: $margin-xl;
 }
 
 .question-area {
   display: flex;
   justify-content: center;
-  margin: 32px 0;
+  margin: $margin-xl 0;
 }
 
 .question-card {
   text-align: center;
-  padding: 32px;
-  border: 2px solid #e0e0e0;
-  border-radius: 12px;
+  padding: $padding-xl;
+  border: 2px solid $color-gray-300;
+  border-radius: $border-radius-lg;
   min-width: 400px;
-  background: #fafafa;
+  background: $color-gray-50;
 }
 
 .word-audio {
-  margin-bottom: 32px;
+  margin-bottom: $margin-xl;
 }
 
 .word-audio p {
-  margin: 16px 0 0 0;
-  color: rgba(0, 0, 0, 0.6);
+  margin: $margin-md 0 0 0;
+  color: $color-text-secondary;
 }
 
 .answer-field {
   width: 100%;
-  margin-bottom: 24px;
+  margin-bottom: $margin-lg;
 }
 
 .answer-field input {
   text-align: center;
-  font-size: 18px;
+  font-size: $font-size-lg;
 }
 
 .question-actions {
   display: flex;
-  gap: 16px;
+  gap: $gap-md;
   justify-content: center;
 }
 
 .progress-info {
   text-align: center;
-  margin-top: 24px;
-  padding-top: 16px;
-  border-top: 1px solid #eee;
+  margin-top: $margin-lg;
+  padding-top: $padding-md;
+  border-top: 1px solid $color-gray-200;
 }
 
 .score-display {
   display: flex;
-  gap: 32px;
+  gap: $gap-xl;
   justify-content: center;
-  font-weight: 500;
+  font-weight: $font-weight-medium;
 }
 
 .correct {
-  color: #2e7d32;
+  color: $color-success-dark;
 }
 
 .incorrect {
-  color: #c62828;
+  color: $color-error-dark;
 }
 
 @media (max-width: 600px) {
   .test-header {
     flex-direction: column;
-    gap: 16px;
+    gap: $gap-md;
   }
 
   .question-card {
     min-width: auto;
     width: 100%;
-    padding: 24px 16px;
+    padding: $padding-lg $padding-md;
   }
 
   .question-actions {
@@ -163,6 +165,6 @@
 
   .score-display {
     flex-direction: column;
-    gap: 8px;
+    gap: $gap-sm;
   }
 }

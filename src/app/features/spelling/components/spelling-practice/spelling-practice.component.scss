@@ -1,19 +1,21 @@
+@use '../../../../../variables' as *;
+
 .unit-selection {
-  padding: 24px 0;
+  padding: $padding-lg 0;
 }
 
 .empty-state {
   text-align: center;
-  padding: 48px 16px;
-  color: rgba(0, 0, 0, 0.6);
+  padding: $padding-xxl $padding-md;
+  color: $color-text-secondary;
 }
 
 .large-icon {
-  font-size: 64px;
-  width: 64px;
-  height: 64px;
-  color: rgba(0, 0, 0, 0.3);
-  margin-bottom: 16px;
+  font-size: $font-size-icon-lg;
+  width: $icon-size-xl;
+  height: $icon-size-xl;
+  color: $color-text-disabled;
+  margin-bottom: $margin-md;
 }
 
 .full-width {
@@ -21,69 +23,69 @@
 }
 
 .practice-session {
-  padding: 16px 0;
+  padding: $padding-md 0;
 }
 
 .session-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 16px;
+  margin-bottom: $margin-md;
 }
 
 .list-info h3 {
-  margin: 0 0 4px 0;
-  font-size: 20px;
+  margin: 0 0 $margin-xs 0;
+  font-size: $font-size-xl;
 }
 
 .list-info p {
   margin: 0;
-  color: rgba(0, 0, 0, 0.6);
+  color: $color-text-secondary;
 }
 
 .session-controls {
   display: flex;
-  gap: 8px;
+  gap: $gap-sm;
   align-items: center;
 }
 
 .progress-bar {
-  margin-bottom: 32px;
+  margin-bottom: $margin-xl;
 }
 
 .word-display {
   display: flex;
   justify-content: center;
-  margin: 32px 0;
+  margin: $margin-xl 0;
 }
 
 .word-card {
   text-align: center;
-  padding: 32px;
-  border: 2px solid #e0e0e0;
-  border-radius: 12px;
+  padding: $padding-xl;
+  border: 2px solid $color-gray-300;
+  border-radius: $border-radius-lg;
   min-width: 300px;
-  background: #fafafa;
+  background: $color-gray-50;
 }
 
 .word-text {
   font-size: 32px;
-  font-weight: 500;
-  margin-bottom: 24px;
-  color: #1976d2;
+  font-weight: $font-weight-medium;
+  margin-bottom: $margin-lg;
+  color: $color-primary;
   font-family: 'Courier New', monospace;
 }
 
 .word-placeholder {
-  padding: 24px 0;
+  padding: $padding-lg 0;
 }
 
 .speak-icon {
-  font-size: 48px;
-  width: 48px;
-  height: 48px;
-  color: rgba(0, 0, 0, 0.3);
-  margin-bottom: 16px;
+  font-size: $font-size-icon-sm;
+  width: $icon-size-lg;
+  height: $icon-size-lg;
+  color: $color-text-disabled;
+  margin-bottom: $margin-md;
 }
 
 .word-controls {
@@ -95,7 +97,7 @@
 .speech-controls {
   display: flex;
   justify-content: center;
-  margin: 24px 0;
+  margin: $margin-lg 0;
 }
 
 .speech-controls mat-form-field {
@@ -106,19 +108,19 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 24px;
-  padding-top: 16px;
+  margin-top: $margin-lg;
+  padding-top: $padding-md;
 }
 
 .nav-info {
-  font-weight: 500;
-  color: rgba(0, 0, 0, 0.6);
+  font-weight: $font-weight-medium;
+  color: $color-text-secondary;
 }
 
 @media (max-width: 600px) {
   .session-header {
     flex-direction: column;
-    gap: 16px;
+    gap: $gap-md;
   }
 
   .session-controls {
@@ -137,6 +139,6 @@
 
   .navigation {
     flex-direction: column;
-    gap: 16px;
+    gap: $gap-md;
   }
 }

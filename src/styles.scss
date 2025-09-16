@@ -1,4 +1,34 @@
 /* You can add global styles to this file, and also import other style files */
 
+// Import variables
+@use 'variables' as *;
+
+// Angular Material theming for version 19+
+@use '@angular/material' as mat;
+
+// Include the common styles for Angular Material
+@include mat.core();
+
+// Create a custom theme using built-in palettes
+$galaxy-theme: mat.define-theme((
+  color: (
+    theme-type: light,
+    primary: mat.$azure-palette,
+    tertiary: mat.$rose-palette,
+  ),
+  typography: (
+    brand-family: $font-family-primary,
+    plain-family: $font-family-primary,
+  ),
+  density: (
+    scale: 0,
+  )
+));
+
+// Apply the theme
+html {
+  @include mat.all-component-themes($galaxy-theme);
+}
+
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family: $font-family-primary; }
