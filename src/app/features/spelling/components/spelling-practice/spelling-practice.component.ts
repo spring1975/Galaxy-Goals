@@ -1,4 +1,5 @@
 import { Component, inject, OnInit, OnDestroy, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -9,7 +10,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatDividerModule } from '@angular/material/divider';
 import { SpellingStore, SpellingUnit } from '../../state/spelling.store';
-
+import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
+import { startWith } from 'rxjs';
 
 @Component({
   selector: 'app-spelling-practice',
@@ -24,19 +26,26 @@ import { SpellingStore, SpellingUnit } from '../../state/spelling.store';
     MatFormFieldModule,
     MatSliderModule,
     MatDividerModule,
+    ReactiveFormsModule,
   ],
   templateUrl: './spelling-practice.component.html',
   styleUrls: ['./spelling-practice.component.scss'],
 })
 export class SpellingPracticeComponent implements OnInit, OnDestroy {
   store = inject(SpellingStore);
+  fb = inject(FormBuilder);
+
+  defaultSpeechRate = 1;
+  form = this.fb.group({
+      speechRate: this.fb.nonNullable.control(this.defaultSpeechRate)
+    });
 
   selectedUnit = signal<SpellingUnit | null>(null);
   currentWordIndex = signal(0);
   showWord = signal(false);
   isSpeaking = signal(false);
   isShuffled = signal(false);
-  speechRate = signal(1);
+
 
   private wordOrder: number[] = [];
   private speechSynth: SpeechSynthesis | null = null;
@@ -104,7 +113,7 @@ export class SpellingPracticeComponent implements OnInit, OnDestroy {
     this.speechSynth.cancel(); // Stop any current speech
 
     const utterance = new SpeechSynthesisUtterance(`Spell... ${word}`);
-    utterance.rate = this.speechRate();
+    utterance.rate = this.form.controls.speechRate.value;
     utterance.volume = 1;
     utterance.pitch = 1;
 
@@ -117,10 +126,6 @@ export class SpellingPracticeComponent implements OnInit, OnDestroy {
 
   toggleWordVisibility(): void {
     this.showWord.set(!this.showWord());
-  }
-
-  setSpeechRate(rate: number): void {
-    this.speechRate.set(rate);
   }
 
   previousWord(): void {

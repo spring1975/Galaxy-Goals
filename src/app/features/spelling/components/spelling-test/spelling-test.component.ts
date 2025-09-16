@@ -12,8 +12,8 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatDialog } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatStepperModule } from '@angular/material/stepper';
-import { SpellingStore, SpellingUnit } from '../state/spelling.store';
-import { SpellingResultsDialogComponent } from './spelling-results-dialog.component';
+import { SpellingStore, SpellingUnit } from '../../state/spelling.store';
+import { SpellingResultsDialogComponent } from '../spelling-results-dialog/spelling-results-dialog.component';
 
 type TestMode = 'RANDOM10' | 'ALL20' | 'FORM';
 
@@ -55,7 +55,7 @@ type TestMode = 'RANDOM10' | 'ALL20' | 'FORM';
                 <p>No spelling lists available. Create a list first!</p>
               </div>
             } @else {
-              <mat-form-field appearance="outline" class="full-width">
+              <mat-form-field class="full-width">
                 <mat-label>Choose a spelling list</mat-label>
                 <mat-select [(value)]="selectedUnitId" (selectionChange)="updateAvailableModes()">
                   @for (unit of store.units(); track unit.id) {
@@ -128,7 +128,7 @@ type TestMode = 'RANDOM10' | 'ALL20' | 'FORM';
                 </div>
 
                 <form [formGroup]="answerForm" (ngSubmit)="submitAnswer()">
-                  <mat-form-field appearance="outline" class="answer-field">
+                  <mat-form-field class="answer-field">
                     <mat-label>Your Answer</mat-label>
                     <input matInput
                            formControlName="answer"
@@ -490,7 +490,7 @@ export class SpellingTestComponent implements OnInit, OnDestroy {
 
     this.speechSynth.cancel();
 
-    const utterance = new SpeechSynthesisUtterance(word);
+    const utterance = new SpeechSynthesisUtterance(`Spell... ${word}`);
     utterance.rate = 0.8;
     utterance.volume = 1;
     utterance.pitch = 1;

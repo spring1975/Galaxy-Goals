@@ -14,7 +14,7 @@
             <p>No spelling lists available. Create a list first!</p>
           </div>
         } @else {
-          <mat-form-field appearance="outline" class="full-width">
+          <mat-form-field class="full-width">
             <mat-label>Choose a spelling list</mat-label>
             <mat-select (selectionChange)="selectUnit($event.value)">
               @for (unit of store.units(); track unit.id) {
@@ -82,12 +82,12 @@
 
         <!-- Speech rate control -->
         <div class="speech-controls">
-          <mat-form-field appearance="outline">
+          <mat-form-field [formGroup]="form">
             <mat-label>Speech Rate</mat-label>
-            <mat-select [value]="speechRate()" (selectionChange)="setSpeechRate($event.value)">
-              <mat-option value="0.5">Very Slow</mat-option>
-              <mat-option value="1">Normal</mat-option>
-              <mat-option value="2.5">Fast</mat-option>
+            <mat-select formControlName="speechRate">
+              <mat-option [value]="0.5">Very Slow</mat-option>
+              <mat-option [value]="1">Normal</mat-option>
+              <mat-option [value]="2.5">Fast</mat-option>
             </mat-select>
           </mat-form-field>
         </div>

@@ -7,7 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
-import { SpellingUnit } from '../state/spelling.store';
+import { SpellingUnit } from '../../state/spelling.store';
 
 export interface SpellingUnitDialogData {
   unit: SpellingUnit | null;
@@ -32,7 +32,7 @@ export interface SpellingUnitDialogData {
 
     <form [formGroup]="unitForm" (ngSubmit)="onSubmit()">
       <mat-dialog-content>
-        <mat-form-field appearance="outline" class="full-width">
+        <mat-form-field class="full-width">
           <mat-label>List Name</mat-label>
           <input matInput formControlName="name" placeholder="Enter list name">
           @if (unitForm.get('name')?.invalid && unitForm.get('name')?.touched) {
@@ -42,7 +42,7 @@ export interface SpellingUnitDialogData {
 
         <div class="words-section">
           <h3>Words</h3>
-          <mat-form-field appearance="outline" class="full-width">
+          <mat-form-field class="full-width">
             <mat-label>Add Word</mat-label>
             <input matInput
                    #wordInput
@@ -79,7 +79,7 @@ export interface SpellingUnitDialogData {
 
         <div class="bulk-input-section">
           <h4>Bulk Add Words</h4>
-          <mat-form-field appearance="outline" class="full-width">
+          <mat-form-field class="full-width">
             <mat-label>Paste Words (one per line or comma-separated)</mat-label>
             <textarea matInput
                       #bulkInput

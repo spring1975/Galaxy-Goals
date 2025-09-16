@@ -6,8 +6,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { SpellingStore, SpellingUnit } from '../state/spelling.store';
-import { SpellingUnitDialogComponent } from './spelling-unit-dialog.component';
+import { SpellingStore, SpellingUnit } from '../../state/spelling.store';
+import { SpellingUnitDialogComponent } from '../spelling-unit-dialog/spelling-unit-dialog.component';
 import { RouterLink } from '@angular/router';
 
 @Component({
