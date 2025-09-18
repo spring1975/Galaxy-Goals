@@ -5,13 +5,18 @@
 @use 'spacing' as *;
 @use 'variables' as *;
 
-// Import Google Fonts
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
-
-// Include the common styles for Angular Material
+// Include the common Angular Material core styles first
 @include mat.core();
+
+// Simple theme approach - use CSS custom properties for colors
+:root {
+  --primary-color: #2d1850;
+  --accent-color: #ffe066;
+  --warn-color: #f44336;
+  --background-color: #2d1850;
+  --card-color: #3a206b;
+  --text-color: #ffe6a7;
+}
 
 // Global styles
 *,
@@ -20,60 +25,58 @@
   box-sizing: border-box;
 }
 
+body {
+  margin: 0;
+  padding: 0;
+  font-family: $font-primary;
+  background: linear-gradient(180deg, #2d1850 0%, #3a206b 100%);
+  color: #ffe6a7;
+}
+
 html {
   font-size: 16px;
   line-height: $line-height-normal;
 }
 
-body {
-  margin: 0;
-  padding: 0;
-  font-family: $font-primary;
-  font-size: $font-size-base;
-  font-weight: $font-weight-normal;
-  line-height: $line-height-normal;
-  color: $text-primary;
-  background-color: $background-primary;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+// Custom overrides for Galaxy look using CSS custom properties
+.mat-mdc-card {
+  background: var(--card-color) !important;
+  border-radius: 24px !important;
+  box-shadow: 0 4px 24px 0 rgba(44, 24, 80, 0.3) !important;
+  color: var(--text-color) !important;
 }
 
-// Utility classes
-.text-center {
-  text-align: center;
+.mat-mdc-raised-button {
+  border-radius: 16px !important;
+  font-weight: 700 !important;
+  background: var(--accent-color) !important;
+  color: var(--primary-color) !important;
+  box-shadow: 0 2px 8px 0 rgba(44, 24, 80, 0.2) !important;
 }
 
-.text-left {
-  text-align: left;
+.mat-mdc-button {
+  border-radius: 16px !important;
+  font-weight: 700 !important;
 }
 
-.text-right {
-  text-align: right;
+.mat-mdc-card-title {
+  color: var(--text-color) !important;
+  font-weight: 700 !important;
 }
 
-.mt-0 { margin-top: $spacing-0; }
-.mt-1 { margin-top: $spacing-1; }
-.mt-2 { margin-top: $spacing-2; }
-.mt-3 { margin-top: $spacing-3; }
-.mt-4 { margin-top: $spacing-4; }
-.mt-5 { margin-top: $spacing-5; }
-.mt-6 { margin-top: $spacing-6; }
-.mt-8 { margin-top: $spacing-8; }
+.mat-mdc-card-subtitle {
+  color: rgba(255, 230, 167, 0.8) !important;
+}
 
-.mb-0 { margin-bottom: $spacing-0; }
-.mb-1 { margin-bottom: $spacing-1; }
-.mb-2 { margin-bottom: $spacing-2; }
-.mb-3 { margin-bottom: $spacing-3; }
-.mb-4 { margin-bottom: $spacing-4; }
-.mb-5 { margin-bottom: $spacing-5; }
-.mb-6 { margin-bottom: $spacing-6; }
-.mb-8 { margin-bottom: $spacing-8; }
+.mat-mdc-card-content {
+  color: var(--text-color) !important;
+}
 
-.p-0 { padding: $spacing-0; }
-.p-1 { padding: $spacing-1; }
-.p-2 { padding: $spacing-2; }
-.p-3 { padding: $spacing-3; }
-.p-4 { padding: $spacing-4; }
-.p-5 { padding: $spacing-5; }
-.p-6 { padding: $spacing-6; }
-.p-8 { padding: $spacing-8; }
+.mat-progress-spinner circle, .mat-progress-bar {
+  stroke: #4de1c3 !important;
+}
+
+// Accent elements
+.galaxy-accent {
+  color: var(--accent-color);
+}
