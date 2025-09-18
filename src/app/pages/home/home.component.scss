@@ -1,0 +1,54 @@
+@use 'src/styles/colors' as *;
+@use 'src/styles/spacing' as *;
+@use 'src/styles/variables' as *;
+@use 'src/styles/fonts' as *;
+
+.home-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  padding: $component-padding-lg;
+}
+
+.welcome-card {
+  max-width: 600px;
+  width: 100%;
+  box-shadow: $shadow-lg;
+  border-radius: $border-radius-xl;
+
+  mat-card-header {
+    background: linear-gradient(135deg, $primary-500, $accent-500);
+    color: $text-inverse;
+    padding: $component-padding-lg;
+    border-radius: $border-radius-xl $border-radius-xl 0 0;
+
+    mat-card-title {
+      font-size: $font-size-2xl;
+      font-weight: $font-weight-bold;
+      margin-bottom: $spacing-2;
+    }
+
+    mat-card-subtitle {
+      color: rgba(255, 255, 255, 0.9);
+      font-size: $font-size-lg;
+    }
+  }
+
+  mat-card-content {
+    padding: $component-padding-lg;
+
+    .welcome-text {
+      font-size: $font-size-lg;
+      line-height: $line-height-relaxed;
+      color: $text-secondary;
+      margin: 0;
+    }
+  }
+
+  mat-card-actions {
+    padding: $component-padding-md $component-padding-lg;
+    background-color: $background-secondary;
+    border-radius: 0 0 $border-radius-xl $border-radius-xl;
+  }
+}

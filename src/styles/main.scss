@@ -1,0 +1,79 @@
+// All @use rules must come first
+@use '@angular/material' as mat;
+@use 'colors' as *;
+@use 'fonts' as *;
+@use 'spacing' as *;
+@use 'variables' as *;
+
+// Import Google Fonts
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+// Include the common styles for Angular Material
+@include mat.core();
+
+// Global styles
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  line-height: $line-height-normal;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: $font-primary;
+  font-size: $font-size-base;
+  font-weight: $font-weight-normal;
+  line-height: $line-height-normal;
+  color: $text-primary;
+  background-color: $background-primary;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// Utility classes
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.mt-0 { margin-top: $spacing-0; }
+.mt-1 { margin-top: $spacing-1; }
+.mt-2 { margin-top: $spacing-2; }
+.mt-3 { margin-top: $spacing-3; }
+.mt-4 { margin-top: $spacing-4; }
+.mt-5 { margin-top: $spacing-5; }
+.mt-6 { margin-top: $spacing-6; }
+.mt-8 { margin-top: $spacing-8; }
+
+.mb-0 { margin-bottom: $spacing-0; }
+.mb-1 { margin-bottom: $spacing-1; }
+.mb-2 { margin-bottom: $spacing-2; }
+.mb-3 { margin-bottom: $spacing-3; }
+.mb-4 { margin-bottom: $spacing-4; }
+.mb-5 { margin-bottom: $spacing-5; }
+.mb-6 { margin-bottom: $spacing-6; }
+.mb-8 { margin-bottom: $spacing-8; }
+
+.p-0 { padding: $spacing-0; }
+.p-1 { padding: $spacing-1; }
+.p-2 { padding: $spacing-2; }
+.p-3 { padding: $spacing-3; }
+.p-4 { padding: $spacing-4; }
+.p-5 { padding: $spacing-5; }
+.p-6 { padding: $spacing-6; }
+.p-8 { padding: $spacing-8; }
