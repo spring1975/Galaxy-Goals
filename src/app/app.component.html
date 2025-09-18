@@ -6,8 +6,28 @@
   <main class="app-main">
     <router-outlet></router-outlet>
   </main>
+    <div class="star-bg">
+      @for (star of stars; track star) {
+        <glxg-star
+          [size]="star.size"
+          [color]="star.color"
+          [left]="star.left"
+          [top]="star.top"
+        ></glxg-star>
+      }
+    </div>
 
-  <footer class="app-footer">
-    <p>&copy; 2025 Galaxy Goals. Reach for the stars!</p>
-  </footer>
+    <div class="hills-bg">
+      <svg
+        width="100%"
+        height="100%"
+        preserveAspectRatio="none"
+        viewBox="0 0 150 20"
+        xmlns="http://www.w3.org/2000/svg">
+        <path
+          fill="#22002b"
+          d="m 0,4.37778 c 0,0 2.076136,-1.14546 6.340909,-1.10454 2.781992,0.0267 11.045455,3.23181 15.70909,5.8909 4.663639,2.6591 9.286365,4.5 13.745456,4.5 4.99091,0 12.804545,-1.88181 15.136363,-3.10909 2.331818,-1.22727 7.445453,-3.02727 10.104543,-3.02727 2.65909,0 5.68637,0.57273 7.32273,0.94091 1.63636,0.36818 3.68182,0.81818 6.05454,0.81818 2.37273,0 6.3,-0.16363 12.72273,-4.70454 6.42273,-4.54091 9.52823,-4.59049 11.61818,-4.58182 4.92955,0.0205 6.91364,1.06364 10.39091,2.33182 3.47727,1.26818 8.12046,2.84317 11.02501,2.88408 L 150,12 L 150,20 L 0,20 Z"
+        />
+      </svg>
+    </div>
 </div>
