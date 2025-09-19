@@ -1,0 +1,29 @@
+@use '@angular/material' as mat;
+@use 'fonts' as *;
+@use 'colors' as *;
+
+// Nunito font
+$custom-typography: mat.m2-define-typography-config(
+  $font-family: $font-primary,
+);
+
+// Create the theme
+$custom-theme: mat.m2-define-light-theme((
+  color: (
+    primary: $primary-palette,
+    accent:  $secondary-palette,
+    secondary: $secondary-palette,
+    tertiary: $tertiary-palette,
+    neutral: $neutral-palette,
+  ),
+  typography: $custom-typography,
+));
+
+// Apply the theme to all components
+@include mat.all-component-themes($custom-theme);
+
+// Apply all typography styles from the theme
+@include mat.all-component-typographies($custom-theme);
+
+// Apply Material Design typography to HTML elements
+@include mat.typography-hierarchy($custom-theme);

@@ -1,3 +1,5 @@
+@use '@angular/material' as mat;
+
 // Primary color palette
 $primary-color: #6366f1; // Indigo
 $primary-50: #eef2ff;
@@ -90,3 +92,158 @@ $text-inverse: #ffffff;
 $border-light: $neutral-200;
 $border-medium: $neutral-300;
 $border-dark: $neutral-400;
+
+// PRIMARY
+$primary-palette: mat.m2-define-palette(
+  (
+    50:  #f0eaf6,
+    100: #d3cbe6,
+    200: #b5aad6,
+    300: #9688c6,
+    400: #7e6fb9,
+    500: #26144C, // base
+    600: #221141,
+    700: #1a0f36,
+    800: #160c2d,
+    900: #120a24,
+    contrast: (
+      50:  #26144C,
+      100: #26144C,
+      200: #26144C,
+      300: #26144C,
+      400: #FBDDAB,
+      500: #FBDDAB,
+      600: #FBDDAB,
+      700: #FBDDAB,
+      800: #FBDDAB,
+      900: #FBDDAB,
+    ),
+  ),
+  500
+);
+
+// SECONDARY
+$secondary-palette: mat.m2-define-palette(
+  (
+    50:  #e8f6f4,
+    100: #c2e6e0,
+    200: #9ad6cb,
+    300: #70c6b6,
+    400: #57b8a8,
+    500: #49AB9F, // base
+    600: #419a8f,
+    700: #38867a,
+    800: #2f7267,
+    900: #24544e,
+    contrast: (
+      50:  #26144C,
+      100: #26144C,
+      200: #26144C,
+      300: #26144C,
+      400: #26144C,
+      500: #FBDDAB,
+      600: #FBDDAB,
+      700: #FBDDAB,
+      800: #FBDDAB,
+      900: #FBDDAB,
+    ),
+  ),
+  500
+);
+
+// TERTIARY
+$tertiary-palette: mat.m2-define-palette(
+  (
+    50:  #f1ecf7,
+    100: #d9cee7,
+    200: #c1add7,
+    300: #a68cc7,
+    400: #8d72b7,
+    500: #3A2064, // base
+    600: #331c58,
+    700: #2a1747,
+    800: #211237,
+    900: #1a0e2a,
+    contrast: (
+      50:  #26144C,
+      100: #26144C,
+      200: #26144C,
+      300: #26144C,
+      400: #FBDDAB,
+      500: #FBDDAB,
+      600: #FBDDAB,
+      700: #FBDDAB,
+      800: #FBDDAB,
+      900: #FBDDAB,
+    ),
+  ),
+  500
+);
+
+// NEUTRAL
+$neutral-palette: mat.m2-define-palette(
+  (
+    50:  #fffaf2,
+    100: #fff0d6,
+    200: #ffe5b8,
+    300: #ffd99a,
+    400: #fccc7f,
+    500: #FBDDAB, // base
+    600: #f3c169,
+    700: #EBA843,
+    800: #d69235,
+    900: #b37027,
+    contrast: (
+      50:  #26144C,
+      100: #26144C,
+      200: #26144C,
+      300: #26144C,
+      400: #26144C,
+      500: #26144C,
+      600: #26144C,
+      700: #26144C,
+      800: #26144C,
+      900: #26144C,
+    ),
+  ),
+  500
+);
+
+// NEUTRAL VARIANT
+$neutral-variant-palette: mat.m2-define-palette(
+  (
+    50:  #fff9f1,
+    100: #ffedcf,
+    200: #ffdfa9,
+    300: #ffd180,
+    400: #fbc760,
+    500: #EBA843, // base
+    600: #d6933c,
+    700: #b87930,
+    800: #965f25,
+    900: #73461a,
+    contrast: (
+      50:  #26144C,
+      100: #26144C,
+      200: #26144C,
+      300: #26144C,
+      400: #26144C,
+      500: #26144C,
+      600: #FBDDAB,
+      700: #FBDDAB,
+      800: #FBDDAB,
+      900: #FBDDAB,
+    ),
+  ),
+  500
+);
+
+// Simple theme approach - use CSS custom properties for colors
+:root {
+  --primary-color: #2d1850;
+  --accent-color: #ffe066;
+  --warn-color: #f44336;
+  --mat-sys-background: #2d1850;
+  --card-color: #3a206b;
+  --text-color: #ffe6a7;
+}

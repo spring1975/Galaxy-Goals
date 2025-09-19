@@ -3,6 +3,20 @@
 @use 'src/styles/variables' as *;
 @use 'src/styles/fonts' as *;
 
+// Planet SVG background at top right
+.planet-bg {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: min(20vw, 200px);
+  pointer-events: none;
+}
+.planet-bg svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
 // Hills SVG background at bottom
 .hills-bg {
   position: fixed;
@@ -12,13 +26,25 @@
   width: 100vw;
   height: 120px; // Increased height to accommodate the hills shape
   pointer-events: none;
-  z-index: 0;
 }
 
 .hills-bg svg {
   width: 100%;
   height: 100%;
   display: block;
+}
+
+.rocket-bg {
+  position: absolute;
+  top: 1rem;
+  left: 4rem;
+  width: 20%;
+  max-width: 150px;
+  height: auto;
+}
+.rocket-bg svg {
+  width: 100%;
+  height: auto;
 }
 
 
@@ -29,16 +55,22 @@
 }
 
 .app-header {
-  background: linear-gradient(135deg, $primary-500, $accent-500);
-  color: $text-inverse;
-  padding: $component-padding-lg;
   text-align: center;
-  box-shadow: $shadow-md;
 
   h1 {
-    margin: 0;
-    font-size: $font-size-3xl;
-    font-weight: $font-weight-bold;
+    font-size: $font-size-5xl;
+    font-weight: $font-weight-black;
+    text-shadow: 0 0 3px var(--mat-sys-background), 0 0 2px var(--mat-sys-background);
+    margin: $font-size-4xl auto $font-size-base;
+  }
+  z-index: 1;
+}
+
+@media (max-width: 600px) {
+  .app-header h1 {
+    max-width: 11rem;
+    margin: $font-size-4xl auto $font-size-base;
+    line-height: calc($font-size-5xl + .5rem);
   }
 }
 
@@ -47,7 +79,7 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  z-index: 2;
+  z-index: 1;
 }
 
 .star-bg {
@@ -57,10 +89,6 @@
   height: 100%;
   pointer-events: none;
   z-index: 0;
-}
-
-.hills-bg {
-  z-index: 1;
 }
 
 .app-footer {

@@ -1,6 +1,6 @@
 // All @use rules must come first
 @use '@angular/material' as mat;
-@use 'colors' as *;
+@use 'custom-material-theme';
 @use 'fonts' as *;
 @use 'spacing' as *;
 @use 'variables' as *;
@@ -8,75 +8,82 @@
 // Include the common Angular Material core styles first
 @include mat.core();
 
-// Simple theme approach - use CSS custom properties for colors
-:root {
-  --primary-color: #2d1850;
-  --accent-color: #ffe066;
-  --warn-color: #f44336;
-  --background-color: #2d1850;
-  --card-color: #3a206b;
-  --text-color: #ffe6a7;
-}
-
-// Global styles
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-body {
+// Apply base typography to html and body
+html, body {
+  font-family: $font-primary;
+  font-size: $font-size-base;
+  line-height: $line-height-normal;
   margin: 0;
   padding: 0;
+  background: var(--mat-sys-background);
+  color: var(--mat-sys-on-background);
+}
+
+// Apply typography styles to common HTML elements using Material Design typography scale
+h1 {
   font-family: $font-primary;
-  background: linear-gradient(180deg, #2d1850 0%, #3a206b 100%);
-  color: #ffe6a7;
+  font-size: 2rem;
+  font-weight: $font-weight-normal;
+  line-height: 2.5rem;
+  margin: 0 0 16px 0;
 }
 
-html {
-  font-size: 16px;
+h2 {
+  font-family: $font-primary;
+  font-size: 1.75rem;
+  font-weight: $font-weight-normal;
+  line-height: 2.25rem;
+  margin: 0 0 16px 0;
+}
+
+h3 {
+  font-family: $font-primary;
+  font-size: 1.5rem;
+  font-weight: $font-weight-normal;
+  line-height: 2rem;
+  margin: 0 0 16px 0;
+}
+
+h4 {
+  font-family: $font-primary;
+  font-size: 1.25rem;
+  font-weight: $font-weight-medium;
+  line-height: 1.75rem;
+  margin: 0 0 16px 0;
+}
+
+h5 {
+  font-family: $font-primary;
+  font-size: 1.125rem;
+  font-weight: $font-weight-medium;
+  line-height: 1.5rem;
+  margin: 0 0 16px 0;
+}
+
+h6 {
+  font-family: $font-primary;
+  font-size: 1rem;
+  font-weight: $font-weight-medium;
+  line-height: 1.5rem;
+  margin: 0 0 16px 0;
+}
+
+p {
+  font-family: $font-primary;
+  font-size: $font-size-base;
+  font-weight: $font-weight-normal;
   line-height: $line-height-normal;
+  margin: 0 0 16px 0;
 }
 
-// Custom overrides for Galaxy look using CSS custom properties
-.mat-mdc-card {
-  background: var(--card-color) !important;
-  border-radius: 24px !important;
-  box-shadow: 0 4px 24px 0 rgba(44, 24, 80, 0.3) !important;
-  color: var(--text-color) !important;
+small {
+  font-family: $font-primary;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-normal;
+  line-height: 1.25rem;
 }
 
-.mat-mdc-raised-button {
-  border-radius: 16px !important;
-  font-weight: 700 !important;
-  background: var(--accent-color) !important;
-  color: var(--primary-color) !important;
-  box-shadow: 0 2px 8px 0 rgba(44, 24, 80, 0.2) !important;
-}
-
-.mat-mdc-button {
-  border-radius: 16px !important;
-  font-weight: 700 !important;
-}
-
-.mat-mdc-card-title {
-  color: var(--text-color) !important;
-  font-weight: 700 !important;
-}
-
-.mat-mdc-card-subtitle {
-  color: rgba(255, 230, 167, 0.8) !important;
-}
-
-.mat-mdc-card-content {
-  color: var(--text-color) !important;
-}
-
-.mat-progress-spinner circle, .mat-progress-bar {
-  stroke: #4de1c3 !important;
-}
-
-// Accent elements
-.galaxy-accent {
-  color: var(--accent-color);
+// Ensure all elements inherit the font family
+* {
+  font-family: inherit;
 }
