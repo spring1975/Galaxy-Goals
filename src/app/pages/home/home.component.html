@@ -8,7 +8,7 @@
     <mat-card>
       <mat-card-header>
         <mat-card-title>Week {{ list.week }} &mdash; {{ list.title }}</mat-card-title>
-        <mat-card-subtitle>{{ list.words }} words &mdash; Last practiced &ndash; {{ list.lastPracticed | fromNow }}</mat-card-subtitle>
+        <mat-card-subtitle>{{ list.wordCount }} words &mdash; Last practiced &ndash; {{ list.lastPracticed | fromNow }}</mat-card-subtitle>
         <div class="score">
           @if (list.percent){
             <mat-progress-spinner
