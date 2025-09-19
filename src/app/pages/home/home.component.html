@@ -1,24 +1,34 @@
 <div class="home-container" style="display: flex; flex-direction: column; gap: 16px;">
 
-    <button mat-stroked-button color="primary" aria-label="Add New List">
+  <button mat-stroked-button color="primary" class="full-width-button large-button" aria-label="Add New List">
       <mat-icon aria-hidden="false" aria-label="Add New List">add</mat-icon> Add New List
     </button>
 
   <mat-card class="welcome-card">
     <mat-card-header>
-      <mat-card-title>Welcome to Galaxy Goals</mat-card-title>
-      <mat-card-subtitle>Your journey to achieve stellar goals starts here</mat-card-subtitle>
+      <mat-card-title>Week 5 - Silent 'e'</mat-card-title>
+      <mat-card-subtitle>12 words - Last practiced Sep 10</mat-card-subtitle>
+
+      <div class="score" aria-label="Progress 74 percent">
+      <mat-progress-spinner
+        class="ring progress"
+        mode="determinate"
+        [value]="74"
+        [diameter]="56"
+        [strokeWidth]="6">
+      </mat-progress-spinner>
+      <div class="label mat-title-small">74%</div>
+    </div>
     </mat-card-header>
 
     <mat-card-content>
-      <p>
-        This is your home base for tracking and achieving your goals.
-        Start your stellar journey today!
-      </p>
     </mat-card-content>
 
-    <mat-card-actions align="end">
-      <button mat-raised-button color="primary">Get Started</button>
+    <mat-card-actions>
+      <button mat-raised-button color="secondary" >Practice</button>
+      <button mat-raised-button color="secondary">Test</button>
+      <button mat-raised-button color="secondary">Edit</button>
+      <button mat-raised-button color="secondary">Delete</button>
     </mat-card-actions>
   </mat-card>
 

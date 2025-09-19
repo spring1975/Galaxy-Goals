@@ -1,7 +1,8 @@
-@use 'src/styles/colors' as *;
-@use 'src/styles/spacing' as *;
-@use 'src/styles/variables' as *;
-@use 'src/styles/fonts' as *;
+@use "src/styles/colors" as *;
+@use "src/styles/spacing" as *;
+@use "src/styles/variables" as *;
+@use "src/styles/fonts" as *;
+@use 'sass:map';
 
 .home-container {
   display: flex;
@@ -9,4 +10,57 @@
   align-items: center;
   min-height: 80vh;
   padding: $component-padding-lg;
+}
+
+.full-width-button {
+  width: 100%;
+  display: block;
+}
+
+.large-button {
+  font-size: 1.25rem;
+  padding: 1rem 2rem;
+  min-height: 56px;
+  border-radius: 1.5rem;
+}
+
+mat-card-actions {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+/* Progress ring */
+.score {
+  position: relative;
+  width: 56px;
+  height: 56px;
+
+  /* Center % label */
+  .label {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    color: map.get($neutral-palette, 90);
+    font-variant-numeric: tabular-nums;
+  }
+}
+.ring {
+  position: absolute;
+  inset: 0;
+}
+
+/* Use M3 system vars so it adapts to light/dark automatically */
+.track {
+  /* full “background” ring (value=100) in a muted tone */
+  --mdc-circular-progress-active-indicator-color: color-mix(in oklab, var(--mat-sys-secondary) 24%, transparent);
+}
+.progress {
+  /* actual progress arc */
+  --mdc-circular-progress-active-indicator-color: var(--mat-sys-secondary);
+}
+
+mat-card {
+  width: 100%;
 }

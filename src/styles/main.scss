@@ -5,7 +5,6 @@
 @use "spacing" as *;
 @use "variables" as *;
 
-
 // Apply base typography to html and body
 html,
 body {
@@ -15,13 +14,14 @@ body {
   background: var(--mat-sys-background);
 }
 
-// Simple theme approach - use CSS custom properties for colors
-:root {
-  @include mat.theme-overrides((
-      background: var(--mat-sys-tertiary),
-    )
-  );
-  @include mat.button-overrides((
-      outlined-label-text-color: #f0b165
-  ));
+/* Layout */
+glxg-home {
+  .mat-mdc-card-header {
+    display: flex;
+    align-items: center;
+    .mat-mdc-card-header-text {
+      min-width: 0;
+      flex: 1 1 56px;
+    }
+  }
 }
