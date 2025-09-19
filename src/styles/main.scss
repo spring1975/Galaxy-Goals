@@ -1,89 +1,27 @@
 // All @use rules must come first
-@use '@angular/material' as mat;
-@use 'custom-material-theme';
-@use 'fonts' as *;
-@use 'spacing' as *;
-@use 'variables' as *;
+@use "@angular/material" as mat;
+@use "custom-material-theme";
+@use "fonts" as *;
+@use "spacing" as *;
+@use "variables" as *;
 
-// Include the common Angular Material core styles first
-@include mat.core();
 
 // Apply base typography to html and body
-html, body {
-  font-family: $font-primary;
-  font-size: $font-size-base;
-  line-height: $line-height-normal;
+html,
+body {
+  // line-height: $line-height-normal;
   margin: 0;
   padding: 0;
   background: var(--mat-sys-background);
-  color: var(--mat-sys-on-background);
 }
 
-// Apply typography styles to common HTML elements using Material Design typography scale
-h1 {
-  font-family: $font-primary;
-  font-size: 2rem;
-  font-weight: $font-weight-normal;
-  line-height: 2.5rem;
-  margin: 0 0 16px 0;
-}
-
-h2 {
-  font-family: $font-primary;
-  font-size: 1.75rem;
-  font-weight: $font-weight-normal;
-  line-height: 2.25rem;
-  margin: 0 0 16px 0;
-}
-
-h3 {
-  font-family: $font-primary;
-  font-size: 1.5rem;
-  font-weight: $font-weight-normal;
-  line-height: 2rem;
-  margin: 0 0 16px 0;
-}
-
-h4 {
-  font-family: $font-primary;
-  font-size: 1.25rem;
-  font-weight: $font-weight-medium;
-  line-height: 1.75rem;
-  margin: 0 0 16px 0;
-}
-
-h5 {
-  font-family: $font-primary;
-  font-size: 1.125rem;
-  font-weight: $font-weight-medium;
-  line-height: 1.5rem;
-  margin: 0 0 16px 0;
-}
-
-h6 {
-  font-family: $font-primary;
-  font-size: 1rem;
-  font-weight: $font-weight-medium;
-  line-height: 1.5rem;
-  margin: 0 0 16px 0;
-}
-
-p {
-  font-family: $font-primary;
-  font-size: $font-size-base;
-  font-weight: $font-weight-normal;
-  line-height: $line-height-normal;
-  margin: 0 0 16px 0;
-}
-
-small {
-  font-family: $font-primary;
-  font-size: $font-size-sm;
-  font-weight: $font-weight-normal;
-  line-height: 1.25rem;
-}
-
-// Ensure all elements inherit the font family
-* {
-  font-family: inherit;
+// Simple theme approach - use CSS custom properties for colors
+:root {
+  @include mat.theme-overrides((
+      background: var(--mat-sys-tertiary),
+    )
+  );
+  @include mat.button-overrides((
+      outlined-label-text-color: #f0b165
+  ));
 }

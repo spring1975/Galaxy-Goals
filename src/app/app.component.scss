@@ -91,15 +91,3 @@
   z-index: 0;
 }
 
-.app-footer {
-  background-color: $background-secondary;
-  color: $text-secondary;
-  text-align: center;
-  padding: $component-padding-md;
-  border-top: 1px solid $border-light;
-
-  p {
-    margin: 0;
-    font-size: $font-size-sm;
-  }
-}

@@ -1,29 +1,45 @@
-@use '@angular/material' as mat;
-@use 'fonts' as *;
-@use 'colors' as *;
+@use 'sass:map';
+@use "@angular/material" as mat;
+@use "fonts" as *;
+@use "colors" as *;
 
-// Nunito font
-$custom-typography: mat.m2-define-typography-config(
-  $font-family: $font-primary,
+// Include the common Angular Material core styles first
+@include mat.core();
+
+:root {
+  // Create M3 theme using your custom brand colors
+  @include mat.theme(
+    (
+      color: (
+        theme-type: light,
+        primary: $primary-palette,
+        tertiary: $tertiary-palette,
+        use-system-variables: true,
+      ),
+      typography: (
+      brand-family: $font-primary,
+      plain-family: $font-primary,
+      bold-weight: 900,
+      medium-weight: 600,
+      regular-weight: 400,
+    ),
+      density: 0,
+    )
+  );
+}
+
+@include mat.typography-hierarchy(
+  mat.define-theme((
+    typography: (
+      brand-family: $font-primary,
+      plain-family: $font-primary,
+      // optional: adjust levels, sizes, weights here
+      // body-large: (size: 1rem, line-height: 1.5rem, weight: 400),
+    ),
+  ))
 );
 
-// Create the theme
-$custom-theme: mat.m2-define-light-theme((
-  color: (
-    primary: $primary-palette,
-    accent:  $secondary-palette,
-    secondary: $secondary-palette,
-    tertiary: $tertiary-palette,
-    neutral: $neutral-palette,
-  ),
-  typography: $custom-typography,
-));
-
-// Apply the theme to all components
-@include mat.all-component-themes($custom-theme);
-
-// Apply all typography styles from the theme
-@include mat.all-component-typographies($custom-theme);
-
-// Apply Material Design typography to HTML elements
-@include mat.typography-hierarchy($custom-theme);
+h1, h2, h3, h4, h5, h6 {
+  color: map.get($neutral-palette, 90);     /* neutral-95 color from your custom palette */
+  /* or brand them: color: var(--mat-sys-primary); */
+}
