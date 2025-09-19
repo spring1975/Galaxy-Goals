@@ -4,32 +4,32 @@
       <mat-icon aria-hidden="false" aria-label="Add New List">add</mat-icon> Add New List
     </button>
 
-  <mat-card class="welcome-card">
-    <mat-card-header>
-      <mat-card-title>Week 5 - Silent 'e'</mat-card-title>
-      <mat-card-subtitle>12 words - Last practiced Sep 10</mat-card-subtitle>
-
-      <div class="score" aria-label="Progress 74 percent">
-      <mat-progress-spinner
-        class="ring progress"
-        mode="determinate"
-        [value]="74"
-        [diameter]="56"
-        [strokeWidth]="6">
-      </mat-progress-spinner>
-      <div class="label mat-title-small">74%</div>
-    </div>
-    </mat-card-header>
-
-    <mat-card-content>
-    </mat-card-content>
-
-    <mat-card-actions>
-      <button mat-raised-button color="secondary" >Practice</button>
-      <button mat-raised-button color="secondary">Test</button>
-      <button mat-raised-button color="secondary">Edit</button>
-      <button mat-raised-button color="secondary">Delete</button>
-    </mat-card-actions>
-  </mat-card>
-
+  @for (list of spellingLists; track list.week) {
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Week {{ list.week }} &mdash; {{ list.title }}</mat-card-title>
+        <mat-card-subtitle>{{ list.words }} words &mdash; Last practiced &ndash; {{ list.lastPracticed | fromNow }}</mat-card-subtitle>
+        <div class="score">
+          @if (list.percent){
+            <mat-progress-spinner
+              class="ring progress"
+              mode="determinate"
+              [value]="list.percent"
+              [diameter]="56"
+              [strokeWidth]="6">
+            </mat-progress-spinner>
+            <div class="label mat-title-small">{{ list.percent }}%</div>
+          }
+        </div>
+      </mat-card-header>
+      <mat-card-content>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button color="secondary">Practice</button>
+        <button mat-raised-button color="secondary">Test</button>
+        <button mat-raised-button color="secondary">Edit</button>
+        <button mat-raised-button color="secondary">Delete</button>
+      </mat-card-actions>
+    </mat-card>
+  }
 </div>
