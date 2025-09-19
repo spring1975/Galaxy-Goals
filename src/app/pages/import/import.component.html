@@ -1,0 +1,6 @@
+<div class="import-container">
+  <h2>Import Spelling Lists</h2>
+  <input type="file" accept="application/json" (change)="onFileChange($event)" />
+  <div *ngIf="error" class="error">{{ error }}</div>
+  <div *ngIf="success" class="success">Import successful!</div>
+</div>

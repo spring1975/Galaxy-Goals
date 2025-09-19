@@ -20,6 +20,14 @@ export const routes: Routes = [
     ]
   },
   {
+    path: 'export',
+    loadComponent: () => import('src/app/pages/export/export.component').then(m => m.ExportComponent)
+  },
+  {
+    path: 'import',
+    loadComponent: () => import('src/app/pages/import/import.component').then(m => m.ImportComponent)
+  },
+  {
     path: '**',
     redirectTo: '/home'
   }

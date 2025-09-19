@@ -1,4 +1,5 @@
 import { signalStore, withState, withMethods, patchState, getState } from '@ngrx/signals';
+import { withEntities, EntityState, addEntity, updateEntity, removeEntity } from '@ngrx/signals/entities';
 import { withStorageSync } from '@angular-architects/ngrx-toolkit';
 import { DataKeys } from 'src/app/shared/storage/data-keys';
 import { Dayjs } from 'dayjs';
@@ -11,49 +12,46 @@ export interface SpellingList {
   lastPracticed?: Dayjs;
 }
 
-export interface SpellingListsState {
-  lists: SpellingList[];
+
+export interface SpellingListsState extends EntityState<SpellingList> {
   currentListId: string | undefined;
 }
 
 const initialState: SpellingListsState = {
-  lists: [],
+  ids: [],
+  entityMap: {},
   currentListId: undefined
 };
 
 export const SpellingListSignalStore = signalStore(
   { providedIn: 'root' },
   withState<SpellingListsState>(initialState),
+  withEntities<SpellingList>(),
   withStorageSync({ key: DataKeys.SPELLING_LISTS }),
   withMethods((store) => ({
     getLists(): SpellingList[] {
-      return getState(store).lists;
+      const state = getState(store);
+  return state.ids.map(id => state.entityMap[id]).filter((e): e is SpellingList => !!e);
     },
     getCurrentList(): SpellingList | undefined {
       const state = getState(store);
-      return state.lists.find(l => l.id === state.currentListId);
+      return state.currentListId ? state.entityMap[state.currentListId] : undefined;
     },
     setCurrentList(id: string): void {
       patchState(store, { currentListId: id });
     },
     addList(list: SpellingList): void {
-      const state = getState(store);
-      patchState(store, { lists: [...state.lists, list] });
+      patchState(store, addEntity(list));
     },
     updateList(list: SpellingList): void {
-      const state = getState(store);
-      patchState(store, {
-        lists: state.lists.map(l => l.id === list.id ? list : l)
-      });
+      patchState(store, updateEntity({ id: list.id, changes: list }));
     },
     deleteList(id: string): void {
+      patchState(store, removeEntity(id));
       const state = getState(store);
-      const newLists = state.lists.filter(l => l.id !== id);
-      const newCurrentListId = state.currentListId === id ? undefined : state.currentListId;
-      patchState(store, {
-        lists: newLists,
-        ...(newCurrentListId !== undefined ? { currentListId: newCurrentListId } : {})
-      });
+      if (state.currentListId === id) {
+        patchState(store, { currentListId: undefined });
+      }
     }
   }))
 );
