@@ -8,6 +8,6 @@ dayjs.extend(relativeTime);
 })
 export class FromNowPipe implements PipeTransform {
   transform(value: dayjs.Dayjs | undefined): string {
-    return value ? value.fromNow() : 'never';
+    return value ? value.fromNow() : 'not yet';
   }
 }

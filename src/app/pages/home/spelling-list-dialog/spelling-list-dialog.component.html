@@ -1,0 +1,31 @@
+<h2 mat-dialog-title>
+  @if (form.value.name) {
+    Edit List
+  } @else {
+    Add New List
+  }
+</h2>
+<form [formGroup]="form" (ngSubmit)="save()" autocomplete="off">
+  <mat-dialog-content>
+    <p>some words here from some people that like words and how they sound like words and such.</p>
+  <mat-form-field>
+      <mat-label>List Name</mat-label>
+      <input matInput formControlName="name" placeholder="Example: Week 7 – Long A" aria-label="List Name" />
+      @if (form.controls.name.invalid && (form.controls.name.touched || form.controls.name.dirty)) {
+        <mat-error>Please enter a list name.</mat-error>
+      }
+    </mat-form-field>
+
+  <mat-form-field>
+      <mat-label>Paste words</mat-label>
+      <textarea matInput formControlName="words" rows="6" placeholder="One word per line" aria-label="Paste words"></textarea>
+      @if (form.controls.words.invalid && (form.controls.words.touched || form.controls.words.dirty)) {
+        <mat-error>Please add at least 1 word.</mat-error>
+      }
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-stroked-button type="button" (click)="cancel()" aria-label="Cancel">Cancel</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid" aria-label="Save">Save</button>
+  </mat-dialog-actions>
+</form>

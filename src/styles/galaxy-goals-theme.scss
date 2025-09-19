@@ -1,0 +1,104 @@
+@use "sass:map";
+@use "@angular/material" as mat;
+@use "fonts" as *;
+@use "colors" as *;
+
+// Include the common Angular Material core styles first
+@include mat.core();
+
+:root {
+  // Create M3 theme using your custom brand colors
+  @include mat.theme(
+    (
+      color: (
+        theme-type: light,
+        primary: $primary-palette,
+        tertiary: $tertiary-palette,
+        use-system-variables: true,
+      ),
+      typography: (
+        brand-family: $font-primary,
+        plain-family: $font-primary,
+        bold-weight: 900,
+        medium-weight: 600,
+        regular-weight: 400,
+      ),
+      density: 0,
+    )
+  );
+  // Simple theme approach - use CSS custom properties for colors
+  @include mat.theme-overrides(
+    (
+      background: var(--mat-sys-tertiary),
+    )
+  );
+  @include mat.button-overrides(
+    (
+      outlined-label-text-color: map.get($neutral-palette, 90),
+    )
+  );
+
+  @include mat.card-overrides(
+    (
+      elevated-container-color: map.get($tertiary-palette, 20),
+      outlined-container-color: map.get($tertiary-palette, 20),
+      outlined-outline-color: map.get($tertiary-palette, 40),
+      outlined-outline-width: 3px,
+      subtitle-text-color: map.get($tertiary-palette, 80),
+      title-text-weight: 700,
+    )
+  );
+}
+
+@include mat.typography-hierarchy(
+  mat.define-theme(
+    (
+      typography: (
+        brand-family: $font-primary,
+        plain-family: $font-primary,
+        // optional: adjust levels, sizes, weights here
+        // body-large: (size: 1rem, line-height: 1.5rem, weight: 400),,
+      ),
+    )
+  )
+);
+
+// Unofficial custom styles for Material components
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: map.get(
+    $neutral-palette,
+    90
+  ); /* neutral-95 color from your custom palette */
+  /* or brand them: color: var(--mat-sys-primary); */
+}
+
+button[mat-stroked-button],
+.mat-stroked-button {
+  background: var(--mat-sys-tertiary);
+}
+
+.mat-mdc-card-title {
+  color: map.get($neutral-palette, 90);
+}
+
+// Smaller buttons for card actions
+mat-card-actions {
+  @include mat.button-overrides(
+    (
+      protected-container-shape: 8px,
+      protected-container-color: map.get($tertiary-palette, 50),
+      protected-label-text-color: map.get($neutral-palette, 90),
+    )
+  );
+}
+
+mat-dialog-content {
+  mat-form-field {
+    width: 100%;
+  }
+}

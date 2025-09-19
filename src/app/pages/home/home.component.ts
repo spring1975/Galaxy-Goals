@@ -1,33 +1,15 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import dayjs from 'dayjs';
 import { FromNowPipe } from 'src/app/shared/pipes/from-now.pipe';
-
-// export interface SpellingListState {
-//   week: number;
-//   title: string;
-//   words: string[];
-//   lastPracticed: dayjs.Dayjs | undefined;
-//   lastNumberCorrect: number | undefined;
-// }
-
-// const sampleLists: SpellingListState[] = [
-//     { week: 1, title: 'double letters', words: ['apple', 'banana', 'cherry'], lastPracticed: dayjs('2023-09-18T19:42:14Z'), lastNumberCorrect: 3 },
-//     { week: 2, title: 'silent e', words: ['cake', 'bike', 'like'], lastPracticed: undefined, lastNumberCorrect: undefined },
-//     { week: 3, title: 'Common Nouns', words: ['happiness', 'candidate', 'catholic', 'appetite', 'camera', 'example', 'fantasy', 'banana', 'cabinet', 'navigate'], lastPracticed: undefined, lastNumberCorrect: undefined },
-//   ];
-
-export interface SpellingList {
-  week: number;
-  title: string;
-  wordCount: number;
-  lastPracticed: dayjs.Dayjs | undefined;
-  percent: number | undefined;
-}
+import { MatDialog } from '@angular/material/dialog';
+import { Router, ActivatedRoute } from '@angular/router';
+import { SpellingListSignalStore, SpellingList } from 'src/app/stores/spelling-list.signalstore';
+import dayjs from 'dayjs';
+import { SpellingListDialogComponent } from './spelling-list-dialog/spelling-list-dialog.component';
 
 @Component({
   selector: 'glxg-home',
@@ -37,12 +19,66 @@ export interface SpellingList {
   styleUrl: './home.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
+  private readonly store = inject(SpellingListSignalStore);
+  private readonly dialog = inject(MatDialog);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
 
-  spellingLists: SpellingList[] = [
-    { week: 1, title: 'double letters', wordCount: 15, lastPracticed: dayjs('2023-09-18T19:42:14Z'), percent: 70 },
-    { week: 2, title: 'silent e', wordCount: 3, lastPracticed: undefined, percent: undefined },
-    { week: 3, title: 'Common Nouns', wordCount: 10, lastPracticed: undefined, percent: undefined },
-  ];
+  spellingLists = this.store.getLists;
+
+  ngOnInit(): void {
+    this.route.paramMap.subscribe(params => {
+      const id = params.get('id');
+      if (this.router.url.startsWith('/home/spellinglist/') && this.router.url.endsWith('/edit')) {
+        this.openEditDialog(id);
+      }
+    });
+  }
+
+  openEditDialog(id: string | null): void {
+    let list: SpellingList | undefined;
+    if (id) {
+      list = this.store.getLists().find(l => l.id === id);
+      this.store.setCurrentList(id);
+    }
+    const dialogRef = this.dialog.open(SpellingListDialogComponent, {
+      data: { list },
+      width: '400px',
+      disableClose: true
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      this.router.navigate(['/home']);
+      if (result) {
+        if (id && list) {
+          this.store.updateList({ ...list, name: result.name, words: result.words });
+        } else {
+          this.store.addList({
+            id: Math.random().toString(36).slice(2),
+            name: result.name,
+            words: result.words,
+            created: dayjs()
+          });
+        }
+      }
+    });
+  }
+
+  practiceList(id: string): void {
+    this.store.setCurrentList(id);
+    // TODO: Navigate to practice page
+  }
+
+  editList(id: string): void {
+    this.router.navigate(['/home/spellinglist', id, 'edit']);
+  }
+
+  deleteList(id: string): void {
+    this.store.deleteList(id);
+  }
+
+  addList(): void {
+    this.router.navigate(['/home/spellinglist', 'new', 'edit']);
+  }
 }
 
