@@ -57,3 +57,36 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+
+## Publishing
+
+### 1. Build the Angular App for Production
+Run the following command to generate the production build:
+```sh
+npm run build -- --output-path=dist --base-href=/Galaxy-Goals/
+```
+- `--output-path=dist` ensures the build output goes to the dist folder.
+- `--base-href=/` sets the base URL for GitHub Pages.
+
+### 2. Install Angular CLI GitHub Pages Deploy Tool
+Install the deploy tool globally (if not already installed):
+```sh
+npm install -g angular-cli-ghpages
+```
+
+### 3. Deploy to GitHub Pages
+Run the deploy command:
+```sh
+npx angular-cli-ghpages --dir=dist
+```
+- This will push the contents of the dist folder to the `gh-pages` branch of your repository.
+
+### 4. Configure GitHub Pages
+- Go to your repository on GitHub.
+- Navigate to **Settings** > **Pages**.
+- Set the source to the `gh-pages` branch.
+
+### 5. Access Your Site
+- After a few minutes, your site will be live at:  
+  `https://<your-github-username>.github.io/<your-repo-name>/`
