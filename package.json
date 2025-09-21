@@ -11,7 +11,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "build:prod": "ng build --configuration production --base-href=/Galaxy-Goals/",
-    "deploy": "ng deploy --base-href=/Galaxy-Goals/"
+    "deploy": "ng deploy --base-href=/Galaxy-Goals/",
+    "pwa:publish": "npm run build:prod && npx angular-cli-ghpages --dir=dist/galaxy-goals"
   },
   "private": true,
   "dependencies": {
