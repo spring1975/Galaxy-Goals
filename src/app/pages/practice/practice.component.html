@@ -1,0 +1,54 @@
+<mat-card class="practice-container">
+  <mat-card-header class="practice-header">
+    <button mat-icon-button aria-label="Back" class="back-btn">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <mat-card-title>{{currentList().name}}</mat-card-title>
+    <mat-card-subtitle>{{progress().current}}/{{progress().total}}</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <section class="word-player">
+      <button mat-fab color="primary" aria-label="Speak word" (click)="speakWord()">
+        <mat-icon>volume_up</mat-icon>
+      </button>
+      <button mat-mini-fab color="accent" aria-label="Repeat" (click)="speakWord()">
+        <mat-icon>replay</mat-icon>
+      </button>
+      <button mat-mini-fab color="accent" aria-label="Slow" (click)="speakWord(true)">
+        <mat-icon>slow_motion_video</mat-icon>
+      </button>
+      @if (showHint()) {
+      <mat-chip color="primary" selected>{{currentWord()?.charAt(0)}}...</mat-chip>
+      }
+    </section>
+
+    <section class="answer-block">
+      <form [formGroup]="practiceForm" (ngSubmit)="onSubmit()">
+        <mat-form-field class="full-width">
+          <mat-label>Type the word</mat-label>
+          <input matInput formControlName="answer" type="text" autofocus aria-label="Type the word" />
+        </mat-form-field>
+        <div class="actions-row">
+          <button mat-raised-button color="primary" type="submit">Submit</button>
+          <button mat-button color="warn" type="button" (click)="skip()">Skip</button>
+        </div>
+      </form>
+      @if (feedback() === 'correct') {
+      <mat-chip color="primary" selected aria-live="polite">Nice! '{{currentWord()}}' is correct.</mat-chip>
+      }
+      @else if (feedback() === 'incorrect') {
+      <mat-chip color="warn" selected aria-live="polite">Almost! Try again.</mat-chip>
+      }
+      @if (showReveal()) {
+      <mat-chip color="accent">Reveal answer?</mat-chip>
+      }
+    </section>
+  </mat-card-content>
+
+  <mat-card-actions class="practice-footer">
+    <span class="accuracy">Accuracy: 60%</span>
+    <span class="words-left">{{progress().total - progress().current}} left</span>
+    <button mat-raised-button color="primary" (click)="nextWord()">Next</button>
+  </mat-card-actions>
+</mat-card>

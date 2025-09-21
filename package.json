@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --open",
+    "start:pwa": "npm run build:local && npx http-server ./dist/galaxy-goals -c-1",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
@@ -11,6 +12,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "build:prod": "ng build --configuration production --base-href=/Galaxy-Goals/",
+    "build:local": "ng build --configuration production --base-href=/",
     "deploy": "ng deploy --base-href=/Galaxy-Goals/",
     "pwa:publish": "npm run build:prod && npx angular-cli-ghpages --dir=dist/galaxy-goals"
   },

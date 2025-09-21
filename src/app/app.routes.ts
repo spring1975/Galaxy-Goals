@@ -20,6 +20,10 @@ export const routes: Routes = [
     ]
   },
   {
+    path: 'practice',
+    loadComponent: () => import('src/app/pages/practice/practice.component').then(m => m.PracticeComponent)
+  },
+  {
     path: 'export',
     loadComponent: () => import('src/app/pages/export/export.component').then(m => m.ExportComponent)
   },

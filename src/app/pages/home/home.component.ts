@@ -65,8 +65,8 @@ export class HomeComponent implements OnInit {
   }
 
   practiceList(id: string): void {
-    this.store.setCurrentList(id);
-    // TODO: Navigate to practice page
+  this.store.setCurrentList(id);
+  this.router.navigate(['/practice']);
   }
 
   editList(id: string): void {
