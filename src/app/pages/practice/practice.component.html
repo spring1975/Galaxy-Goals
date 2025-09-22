@@ -1,6 +1,6 @@
 <mat-card class="practice-container">
   <mat-card-header class="practice-header">
-  <button mat-icon-button aria-label="Back" class="back-btn" [routerLink]="['/home']">
+    <button mat-icon-button aria-label="Back" class="back-btn" [routerLink]="['/home']">
       <mat-icon>arrow_back</mat-icon>
     </button>
     <mat-card-title>{{currentList().name}}</mat-card-title>
@@ -19,37 +19,53 @@
       <mat-chip color="primary" selected>{{currentWord()?.charAt(0)}}...</mat-chip>
       }
     </section>
-      @if (showConfetti()) {
-        <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
-          <glxg-confetti-burst></glxg-confetti-burst>
-        </div>
+    @if (showConfetti()) {
+    <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
+      <glxg-confetti-burst></glxg-confetti-burst>
+    </div>
+    }
+    <div class="sentence-row">
+      <button mat-raised-button color="accent" type="button" (click)="generateSentence()"
+        [disabled]="isGenerating() || sentenceService.isBusy()">
+        Use in a Sentence
+      </button>
+      @if (sentenceService.isBusy()) {
+      <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 1rem;">
+        <mat-progress-spinner mode="indeterminate" color="accent" diameter="32"></mat-progress-spinner>
+      </div>
       }
-      <form [formGroup]="practiceForm" (ngSubmit)="onSubmit()">
-        <mat-form-field>
-          <mat-label>Type the word</mat-label>
-          <input matInput formControlName="answer" type="text" autofocus aria-label="Type the word" />
-        </mat-form-field>
-        <div class="actions-row">
-          <button mat-raised-button color="primary" type="submit">Submit</button>
-          <button mat-button color="warn" type="button" (click)="skip()">Skip</button>
-        </div>
-      </form>
-      @if (feedback() === 'correct') {
-      <mat-chip color="primary" selected aria-live="polite">Nice! '{{currentWord()}}' is correct.</mat-chip>
+      @if (generatedSentence()) {
+      <div class="generated-sentence">
+        {{generatedSentence()}}
+      </div>
       }
-      @else if (feedback() === 'incorrect') {
-      <mat-chip color="warn" selected aria-live="polite">Almost! Try again.</mat-chip>
-      }
-      @if (showReveal()) {
-      <mat-chip color="accent">Reveal answer?</mat-chip>
-      }
+    </div>
+    <form [formGroup]="practiceForm" (ngSubmit)="onSubmit()">
+      <mat-form-field>
+        <mat-label>Type the word</mat-label>
+        <input matInput formControlName="answer" type="text" autofocus aria-label="Type the word" />
+      </mat-form-field>
+      <div class="actions-row">
+        <button mat-raised-button color="primary" type="submit">Submit</button>
+        <button mat-button color="warn" type="button" (click)="skip()">Skip</button>
+      </div>
+    </form>
+    @if (feedback() === 'correct') {
+    <mat-chip color="primary" selected aria-live="polite">Nice! '{{currentWord()}}' is correct.</mat-chip>
+    }
+    @else if (feedback() === 'incorrect') {
+    <mat-chip color="warn" selected aria-live="polite">Almost! Try again.</mat-chip>
+    }
+    @if (showReveal()) {
+    <mat-chip color="accent">Reveal answer?</mat-chip>
+    }
   </mat-card-content>
 
   <mat-card-actions class="practice-footer">
-  <span class="accuracy">Accuracy: {{accuracyPercent()}}%</span>
+    <span class="accuracy">Accuracy: {{accuracyPercent()}}%</span>
     <span class="words-left">{{progress().total - progress().current}} left</span>
     @if (feedback() === 'correct' || showReveal()) {
-      <button mat-raised-button color="primary" (click)="nextWord()">Next</button>
+    <button mat-raised-button color="primary" (click)="nextWord()">Next</button>
     }
   </mat-card-actions>
 </mat-card>

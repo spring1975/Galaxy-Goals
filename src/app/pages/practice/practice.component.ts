@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { SentenceService } from 'src/app/shared/sentence/sentence.service';
 import { Router, RouterModule } from '@angular/router';
 import { Subject, timer } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -10,7 +11,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatChipsModule } from '@angular/material/chips';
-import { signal, computed } from '@angular/core';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { computed } from '@angular/core';
 import { SpellingListSignalStore } from 'src/app/stores/spelling-list.signalstore';
 import dayjs, { Dayjs } from 'dayjs';
 import { ConfettiBurstComponent } from "src/app/shared/confetti-burst/confetti-burst.component";
@@ -25,15 +27,26 @@ import { ConfettiBurstComponent } from "src/app/shared/confetti-burst/confetti-b
     MatIconModule,
     MatFormFieldModule,
     MatInputModule,
-    MatChipsModule,
+  MatChipsModule,
+  MatProgressSpinnerModule,
     ConfettiBurstComponent,
     RouterModule
 ],
   templateUrl: './practice.component.html',
   styleUrls: ['./practice.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    { provide: SENTENCE_SERVICE_CONFIG, useValue: { autoInit: false } }
+  ]
 })
 export class PracticeComponent {
+  public sentenceService = inject(SentenceService);
+
+  /** Stores the generated sentence with blank */
+  generatedSentence = signal<string>('');
+
+  /** Indicates if sentence is being generated */
+  isGenerating = signal(false);
   private confettiTrigger$ = new Subject<void>();
   accuracyPercent = computed(() => {
     const total = this.wordIndex() + 1;
@@ -95,6 +108,14 @@ export class PracticeComponent {
         })
       )
       .subscribe(() => this.showConfetti.set(false));
+  }
+
+  async generateSentence() {
+    this.isGenerating.set(true);
+  const word = this.currentWord() ?? '';
+  const sentence = await this.sentenceService.generateSentenceWithBlank(word);
+  this.generatedSentence.set(sentence);
+  this.isGenerating.set(false);
   }
 
 

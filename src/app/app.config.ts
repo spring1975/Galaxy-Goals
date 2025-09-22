@@ -5,6 +5,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideServiceWorker } from '@angular/service-worker';
 import { routes } from './app.routes';
 import { MAT_CARD_CONFIG } from '@angular/material/card';
+import { SENTENCE_SERVICE_CONFIG } from 'src/app/shared/sentence/sentence.service';
 import { environment } from '../environments/environment';
 
 export const appConfig: ApplicationConfig = {
@@ -20,6 +21,7 @@ export const appConfig: ApplicationConfig = {
         appearance: 'outlined',
         elevation: '0',
       }
-    }
+    },
+    { provide: SENTENCE_SERVICE_CONFIG, useValue: {} }
   ]
 };
