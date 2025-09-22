@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Subject } from 'rxjs';
-import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -11,6 +11,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { signal } from '@angular/core';
 import { SpellingListSignalStore } from 'src/app/stores/spelling-list.signalstore';
 import dayjs, { Dayjs } from 'dayjs';
+import { ConfettiBurstComponent } from "src/app/shared/confetti-burst/confetti-burst.component";
 @Component({
   selector: 'app-practice',
   standalone: true,
@@ -22,18 +23,20 @@ import dayjs, { Dayjs } from 'dayjs';
     MatIconModule,
     MatFormFieldModule,
     MatInputModule,
-  MatChipsModule
-  ],
+    MatChipsModule,
+    ConfettiBurstComponent
+],
   templateUrl: './practice.component.html',
   styleUrls: ['./practice.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PracticeComponent {
+  showConfetti = signal(false);
   private correctAnswer$ = new Subject<void>();
   private cancel$ = new Subject<void>();
   spellingListStore = inject(SpellingListSignalStore);
   practiceForm = new FormGroup({
-    answer: new FormControl('', Validators.required),
+    answer: new FormControl(''),
   });
   currentList = signal(this.spellingListStore.getCurrentList() ?? {
     id: 'demo',
@@ -73,7 +76,7 @@ export class PracticeComponent {
     if (!('speechSynthesis' in window)) return;
     const utter = new SpeechSynthesisUtterance(`Spell ${this.currentWord()}`);
     utter.voice = this.selectedVoice;
-    utter.rate = slow ? 0.75 : 1;
+    utter.rate = slow ? 0.25 : 0.75;
     window.speechSynthesis.cancel();
     window.speechSynthesis.speak(utter);
   }
@@ -98,6 +101,8 @@ export class PracticeComponent {
       if (this.attempts[idx] === 1) {
         this.correctOnFirstTry[idx] = 1;
       }
+      this.showConfetti.set(true);
+      setTimeout(() => this.showConfetti.set(false), 1200);
       this.cancel$.next();
       this.correctAnswer$.next();
     } else {

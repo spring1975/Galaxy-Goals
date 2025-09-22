@@ -1,0 +1,7 @@
+<div class="confetti-burst" [class.active]="active()">
+  @for (p of particles(); track p) {
+  <img class="particle" [src]="p.src" [style.--tx.px]="p.style['--tx']" [style.--ty.px]="p.style['--ty']"
+    [style.--rot.deg]="p.style['--rot']" [style.--dur.s]="p.style['--dur']" [style.width.px]="p.sizePx"
+    [style.height.px]="p.sizePx" [style.animationDelay.s]="p.style['--delay']" alt="" aria-hidden="true" />
+  }
+</div>

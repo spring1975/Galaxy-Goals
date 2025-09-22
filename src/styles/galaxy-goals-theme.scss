@@ -97,7 +97,7 @@ mat-card-actions {
   );
 }
 
-mat-dialog-content {
+mat-dialog-content, mat-card-content {
   mat-form-field {
     width: 100%;
   }

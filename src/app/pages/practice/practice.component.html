@@ -12,9 +12,6 @@
       <button mat-fab color="primary" aria-label="Speak word" (click)="speakWord()">
         <mat-icon>volume_up</mat-icon>
       </button>
-      <button mat-mini-fab color="accent" aria-label="Repeat" (click)="speakWord()">
-        <mat-icon>replay</mat-icon>
-      </button>
       <button mat-mini-fab color="accent" aria-label="Slow" (click)="speakWord(true)">
         <mat-icon>slow_motion_video</mat-icon>
       </button>
@@ -22,10 +19,13 @@
       <mat-chip color="primary" selected>{{currentWord()?.charAt(0)}}...</mat-chip>
       }
     </section>
-
-    <section class="answer-block">
+      @if (showConfetti()) {
+        <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
+          <glxg-confetti-burst></glxg-confetti-burst>
+        </div>
+      }
       <form [formGroup]="practiceForm" (ngSubmit)="onSubmit()">
-        <mat-form-field class="full-width">
+        <mat-form-field>
           <mat-label>Type the word</mat-label>
           <input matInput formControlName="answer" type="text" autofocus aria-label="Type the word" />
         </mat-form-field>
@@ -43,12 +43,13 @@
       @if (showReveal()) {
       <mat-chip color="accent">Reveal answer?</mat-chip>
       }
-    </section>
   </mat-card-content>
 
   <mat-card-actions class="practice-footer">
     <span class="accuracy">Accuracy: 60%</span>
     <span class="words-left">{{progress().total - progress().current}} left</span>
-    <button mat-raised-button color="primary" (click)="nextWord()">Next</button>
+    @if (feedback() === 'correct' || showReveal()) {
+      <button mat-raised-button color="primary" (click)="nextWord()">Next</button>
+    }
   </mat-card-actions>
 </mat-card>

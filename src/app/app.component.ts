@@ -43,7 +43,7 @@ export class AppComponent {
   }
 
   randomStar() {
-    const size = Math.floor(Math.random() * 18) + 12; // 12-30px
+    const size = Math.floor(Math.random() * 5) + 2; // 2-6px
     const color = this.STAR_COLORS[Math.floor(Math.random() * this.STAR_COLORS.length)] ?? '#FFD700';
     const left = `${Math.random() * 100}%`;
     const top = `${Math.random() * 100}%`;

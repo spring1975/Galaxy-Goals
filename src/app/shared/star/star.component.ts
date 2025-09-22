@@ -8,7 +8,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StarComponent {
-  @Input() size = 24;
+  @Input() size = 10;
   @Input() color = '#FFD700';
   @Input() left = '0%';
   @Input() top = '0%';
