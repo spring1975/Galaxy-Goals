@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { SentenceService } from 'src/app/shared/sentence/sentence.service';
+import { SentenceService, SENTENCE_SERVICE_CONFIG } from 'src/app/shared/sentence/sentence.service';
 import { Router, RouterModule } from '@angular/router';
 import { Subject, timer } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -17,7 +17,7 @@ import { SpellingListSignalStore } from 'src/app/stores/spelling-list.signalstor
 import dayjs, { Dayjs } from 'dayjs';
 import { ConfettiBurstComponent } from "src/app/shared/confetti-burst/confetti-burst.component";
 @Component({
-  selector: 'app-practice',
+  selector: 'glxg-practice',
   standalone: true,
   imports: [
     CommonModule,
@@ -27,8 +27,8 @@ import { ConfettiBurstComponent } from "src/app/shared/confetti-burst/confetti-b
     MatIconModule,
     MatFormFieldModule,
     MatInputModule,
-  MatChipsModule,
-  MatProgressSpinnerModule,
+    MatChipsModule,
+    MatProgressSpinnerModule,
     ConfettiBurstComponent,
     RouterModule
 ],

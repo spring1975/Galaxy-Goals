@@ -14,7 +14,7 @@ body {
   background: var(--mat-sys-background);
 }
 
-/* Layout */
+/* Layout for title and progress */
 glxg-home {
   .mat-mdc-card-header {
     display: flex;
@@ -23,5 +23,20 @@ glxg-home {
       min-width: 0;
       flex: 1 1 56px;
     }
+  }
+}
+
+/* Layout for side-by-side titles */
+glxg-practice {
+  .mat-mdc-card-header-text {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+  .mat-mdc-card-title {
+    display: flex;
+    align-items: center;
+    margin: 0;
   }
 }

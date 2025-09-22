@@ -11,8 +11,16 @@
       <mat-card-title>{{ list.name }}</mat-card-title>
       <mat-card-subtitle>{{ list.words.length }} words &mdash; Last practiced <mat-icon
           aria-hidden="true">arrow_right</mat-icon>{{ list.lastPracticed | fromNow}}</mat-card-subtitle>
-      <!-- Progress ring can be added when accuracy is tracked -->
-    </mat-card-header>
+ <div class="score" aria-label="Progress 74 percent">
+      <mat-progress-spinner
+        class="ring progress"
+        mode="determinate"
+        [value]="74"
+        [diameter]="56"
+        [strokeWidth]="6">
+      </mat-progress-spinner>
+      <div class="label mat-title-small">74%</div>
+    </div>    </mat-card-header>
     <mat-card-content>
     </mat-card-content>
     <mat-card-actions>

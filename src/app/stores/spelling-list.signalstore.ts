@@ -3,6 +3,7 @@ import { withEntities, EntityState, addEntity, updateEntity, removeEntity } from
 import { withStorageSync } from '@angular-architects/ngrx-toolkit';
 import { DataKeys } from 'src/app/shared/storage/data-keys';
 import { Dayjs } from 'dayjs';
+import { sampleLists } from 'src/test-data';
 
 export interface SpellingList {
   id: string;
@@ -31,7 +32,8 @@ export const SpellingListSignalStore = signalStore(
   withMethods((store) => ({
     getLists(): SpellingList[] {
       const state = getState(store);
-  return state.ids.map(id => state.entityMap[id]).filter((e): e is SpellingList => !!e);
+      const savedLists = state.ids.map(id => state.entityMap[id]).filter((e): e is SpellingList => !!e);
+  return sampleLists[0] ? [sampleLists[0], ...savedLists] : savedLists;
     },
     getCurrentList(): SpellingList | undefined {
       const state = getState(store);

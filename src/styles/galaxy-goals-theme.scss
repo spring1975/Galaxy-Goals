@@ -82,6 +82,10 @@ button[mat-stroked-button],
   background: var(--mat-sys-tertiary);
 }
 
+.mat-mdc-card {
+  padding: .5rem;
+}
+
 .mat-mdc-card-title {
   color: map.get($neutral-palette, 90);
 }

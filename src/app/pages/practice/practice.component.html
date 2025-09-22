@@ -1,10 +1,10 @@
 <mat-card class="practice-container">
   <mat-card-header class="practice-header">
-    <button mat-icon-button aria-label="Back" class="back-btn" [routerLink]="['/home']">
+
+    <mat-card-title><button mat-icon-button aria-label="Back" class="back-btn" [routerLink]="['/home']">
       <mat-icon>arrow_back</mat-icon>
-    </button>
-    <mat-card-title>{{currentList().name}}</mat-card-title>
-    <mat-card-subtitle>{{progress().current}}/{{progress().total}}</mat-card-subtitle>
+    </button> {{currentList().name}}</mat-card-title>
+    <mat-card-subtitle>{{progress().current}}/{{progress().total}} <span class="accuracy">85%</span></mat-card-subtitle>
   </mat-card-header>
 
   <mat-card-content>

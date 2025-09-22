@@ -1,20 +1,25 @@
 .practice-container {
-  display: flex;
-  flex-direction: column;
   max-width: 1100px;
-  margin: 0 auto;
-  padding: 16px;
 }
-.practice-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 24px;
+:host {
+  .practice-header {
+    .mat-mdc-card-header-text {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+  }
 }
+.accuracy {
+  margin-left: 1.5rem;
+}
+
 .word-player {
   display: flex;
   align-items: center;
-  gap: 16px;
+  justify-content: center;
+  gap: 1.5rem;
   margin-bottom: 24px;
 }
 .answer-block {
@@ -34,7 +39,8 @@
   .practice-container {
     padding: 16px;
   }
-  .practice-header, .practice-footer {
+  .practice-header,
+  .practice-footer {
     flex-direction: column;
     align-items: flex-start;
   }

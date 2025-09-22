@@ -3,7 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { StarComponent } from './shared/star/star.component';
 
 @Component({
-  selector: 'app-root',
+  selector: 'glxg-root',
   standalone: true,
   imports: [RouterOutlet, StarComponent],
   templateUrl: './app.component.html',
