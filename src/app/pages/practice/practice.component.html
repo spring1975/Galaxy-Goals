@@ -1,6 +1,6 @@
 <mat-card class="practice-container">
   <mat-card-header class="practice-header">
-    <button mat-icon-button aria-label="Back" class="back-btn">
+  <button mat-icon-button aria-label="Back" class="back-btn" [routerLink]="['/home']">
       <mat-icon>arrow_back</mat-icon>
     </button>
     <mat-card-title>{{currentList().name}}</mat-card-title>
@@ -46,7 +46,7 @@
   </mat-card-content>
 
   <mat-card-actions class="practice-footer">
-    <span class="accuracy">Accuracy: 60%</span>
+  <span class="accuracy">Accuracy: {{accuracyPercent()}}%</span>
     <span class="words-left">{{progress().total - progress().current}} left</span>
     @if (feedback() === 'correct' || showReveal()) {
       <button mat-raised-button color="primary" (click)="nextWord()">Next</button>
