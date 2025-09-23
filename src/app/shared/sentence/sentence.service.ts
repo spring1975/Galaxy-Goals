@@ -1,43 +1,78 @@
-import { Injectable, signal, WritableSignal, Inject, InjectionToken } from '@angular/core';
-import { CreateMLCEngine, MLCEngine, ChatCompletionMessageParam } from '@mlc-ai/web-llm';
+import {
+  Injectable,
+  signal,
+  WritableSignal,
+  Inject,
+  InjectionToken,
+} from '@angular/core';
+import {
+  CreateMLCEngine,
+  MLCEngine,
+  ChatCompletionMessageParam,
+} from '@mlc-ai/web-llm';
+
+// String constants
+
+const EMPTY_STRING = '';
+const AUTO_INIT_REJECT_MESSAGE = 'autoInit is false';
+const ENGINE_INIT_FAIL = 'Engine initialization failed:';
+const MODEL_ID = 'Llama-3.1-8B-Instruct-q4f32_1-MLC';
+const LLM_INIT_FAIL_MESSAGE = 'LLM failed to initialize.';
+const ERROR_GENERATING_SENTENCE = 'Error generating sentence.';
 
 // Configuration interface for SentenceService
 export interface SentenceServiceConfig {
   autoInit?: boolean;
 }
 
-export const SENTENCE_SERVICE_CONFIG = new InjectionToken<SentenceServiceConfig>('SentenceServiceConfig');
+export const SENTENCE_SERVICE_CONFIG =
+  new InjectionToken<SentenceServiceConfig>('SentenceServiceConfig');
 
 @Injectable({ providedIn: 'root' })
 export class SentenceService {
+  private modelId = MODEL_ID;
   private engine: MLCEngine | null = null;
-  private modelId = 'Llama-3.1-8B-Instruct-q4f32_1-MLC';
   private initPromise: Promise<void>;
   public isInitialized: WritableSignal<boolean> = signal(false);
   public isBusy: WritableSignal<boolean> = signal(false);
 
   private config: SentenceServiceConfig;
+
   constructor(@Inject(SENTENCE_SERVICE_CONFIG) config?: SentenceServiceConfig) {
     this.config = config ?? {};
     if (this.config.autoInit) {
-      this.initPromise = this.initEngine().catch(error => {
-        console.error('Engine initialization failed:', error);
+      this.initPromise = this.initEngine().catch((error) => {
+        console.error(ENGINE_INIT_FAIL, error);
         // Re-throw to maintain promise rejection
         throw error;
       });
     } else {
-      this.initPromise = Promise.resolve();
+      this.initPromise = Promise.reject(AUTO_INIT_REJECT_MESSAGE);
     }
   }
   /**
-   * Manually initialize the engine if not initialized in constructor.
+      const prompt = `Use the word '${targetWord}' in a sentence.`;
    */
-  public initializeEngine(): Promise<void> {
+  public async initializeEngine(): Promise<void> {
     if (!this.isInitialized()) {
-      this.initPromise = this.initEngine().catch(error => {
-        console.error('Engine initialization failed:', error);
-        throw error;
-      });
+      // Check if the promise was rejected with autoInitRejectMessage
+      try {
+        await this.initPromise;
+      } catch (error) {
+        if (error === AUTO_INIT_REJECT_MESSAGE) {
+          // Reset the promise and initialize
+          this.initPromise = this.initEngine().catch((error) => {
+            console.error(ENGINE_INIT_FAIL, error);
+            throw error;
+          });
+          return this.initPromise;
+        } else {
+          // Re-throw other errors
+          throw error;
+        }
+      }
+
+      // If we get here, the promise resolved successfully
       return this.initPromise;
     }
     return this.initPromise;
@@ -58,44 +93,59 @@ export class SentenceService {
 
   async generateSentenceWithBlank(targetWord: string): Promise<string> {
     this.isBusy.set(true);
-    try {
-      await this.initPromise;
-    } catch (error) {
+    const initialized = await this.ensureEngineInitialized();
+    if (!initialized) {
       this.isBusy.set(false);
-      console.error('Engine initialization failed in generateSentenceWithBlank:', error);
-      return 'LLM failed to initialize.';
+      return LLM_INIT_FAIL_MESSAGE;
     }
 
-    if (!this.engine) {
-      this.isBusy.set(false);
-      return 'LLM failed to initialize.';
-    }
-
-    const prompt = `Use the word '${targetWord}' in a sentence. The sentence should
-    have a blank '______' where the word would normally appear.`;
+    const prompt = `Use the word '${targetWord}' in a sentence.`;
     const messages: ChatCompletionMessageParam[] = [
-      { role: 'system', content: 'You are a helpful assistant.' },
-      { role: 'user', content: prompt }
+      {
+        role: 'system',
+        content: `
+          You are a spelling bee tutor for 5th graders.
+          - Always generate exactly one G-rated sentence using the given word.
+          - Sentence should be 8–14 words.
+          - Keep the vocabulary simple and kid-appropriate.
+        `,
+      },
+      { role: 'user', content: prompt },
     ];
     try {
-      const reply = await this.engine.chat.completions.create({ messages });
-      const sentence = reply.choices[0]?.message?.content || '';
+      const reply = await this.engine!.chat.completions.create({ messages });
+      const sentence = reply.choices[0]?.message?.content || EMPTY_STRING;
       return sentence;
     } catch (error) {
-      console.error('Error generating sentence:', error);
-      return 'Error generating sentence.';
+      // ...existing code...
+      return ERROR_GENERATING_SENTENCE;
     } finally {
       this.isBusy.set(false);
     }
   }
 
-  // private replaceWordWithBlank(sentence: string, targetWord: string): string {
-  //         // Replace all forms of the target word with blank
-  //     const wordRegex = new RegExp(`\b${this.escapeRegex(targetWord)}(s|es|ed|ing)?\b`, 'gi');
-  //     return sentence.replace(wordRegex, '______');
-  // }
-
-  // private escapeRegex(word: string): string {
-  //   return word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  // }
+  /**
+   * Ensures the engine is initialized, handling autoInitRejectMessage.
+   * Returns true if initialized, false otherwise.
+   */
+  private async ensureEngineInitialized(): Promise<boolean> {
+    try {
+      await this.initPromise;
+      return !!this.engine;
+    } catch (error) {
+      if (error === AUTO_INIT_REJECT_MESSAGE) {
+        this.initPromise = this.initEngine().catch((err) => {
+          console.error('Engine initialization failed:', err);
+          throw err;
+        });
+        try {
+          await this.initPromise;
+          return !!this.engine;
+        } catch {
+          return false;
+        }
+      }
+      return false;
+    }
+  }
 }

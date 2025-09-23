@@ -25,7 +25,7 @@
     </div>
     }
     <div class="sentence-row">
-      <button mat-raised-button color="accent" type="button" (click)="generateSentence()"
+      <button mat-flat-button color="secondary" type="button" (click)="generateSentence()"
         [disabled]="isGenerating() || sentenceService.isBusy()">
         Use in a Sentence
       </button>
@@ -41,13 +41,13 @@
       }
     </div>
     <form [formGroup]="practiceForm" (ngSubmit)="onSubmit()">
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Type the word</mat-label>
         <input matInput formControlName="answer" type="text" autofocus aria-label="Type the word" />
       </mat-form-field>
       <div class="actions-row">
-        <button mat-raised-button color="primary" type="submit">Submit</button>
-        <button mat-button color="warn" type="button" (click)="skip()">Skip</button>
+        <button mat-flat-button color="primary" type="submit">Submit</button>
+        <button mat-button color="secondary" type="button" (click)="skip()">Skip</button>
       </div>
     </form>
     @if (feedback() === 'correct') {
@@ -62,8 +62,8 @@
   </mat-card-content>
 
   <mat-card-actions class="practice-footer">
-    <span class="accuracy">Accuracy: {{accuracyPercent()}}%</span>
-    <span class="words-left">{{progress().total - progress().current}} left</span>
+    <p class="accuracy">Accuracy: {{accuracyPercent()}}%</p>
+    <p class="words-left">{{progress().total - progress().current}} left</p>
     @if (feedback() === 'correct' || showReveal()) {
     <button mat-raised-button color="primary" (click)="nextWord()">Next</button>
     }

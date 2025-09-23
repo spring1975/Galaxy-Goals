@@ -29,12 +29,13 @@
   // Simple theme approach - use CSS custom properties for colors
   @include mat.theme-overrides(
     (
-      background: var(--mat-sys-tertiary),
+      background: var(--mat-sys-tertiary)
     )
   );
   @include mat.button-overrides(
     (
       outlined-label-text-color: map.get($neutral-palette, 90),
+      outlined-outline-width: 3px,
     )
   );
 
@@ -42,13 +43,14 @@
     (
       elevated-container-color: map.get($tertiary-palette, 20),
       outlined-container-color: map.get($tertiary-palette, 20),
-      outlined-outline-color: map.get($tertiary-palette, 40),
+      outlined-outline-color: map.get($tertiary-palette, 60),
       outlined-outline-width: 3px,
       subtitle-text-color: map.get($tertiary-palette, 80),
       title-text-weight: 700,
     )
   );
 }
+
 
 @include mat.typography-hierarchy(
   mat.define-theme(
@@ -69,7 +71,9 @@ h2,
 h3,
 h4,
 h5,
-h6 {
+h6,
+p
+ {
   color: map.get(
     $neutral-palette,
     90
