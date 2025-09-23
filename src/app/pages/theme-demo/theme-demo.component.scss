@@ -1,0 +1,17 @@
+.theme-demo {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 400px;
+  margin: 2rem auto;
+}
+
+mat-chip-list {
+  width: 100%;
+}
+
+mat-chip {
+  margin-right: 0.5rem;
+}

@@ -11,7 +11,7 @@
   @include mat.theme(
     (
       color: (
-        theme-type: light,
+        theme-type: dark,
         primary: $primary-palette,
         tertiary: $tertiary-palette,
         use-system-variables: true,
@@ -29,15 +29,23 @@
   // Simple theme approach - use CSS custom properties for colors
   @include mat.theme-overrides(
     (
-      background: var(--mat-sys-tertiary)
+      background: map.get($tertiary-palette, 35),
     )
   );
+  // mat-stroked/outlined button overrides
   @include mat.button-overrides(
     (
       outlined-label-text-color: map.get($neutral-palette, 90),
-      outlined-outline-width: 3px,
     )
   );
+
+  .large-button {
+    @include mat.button-overrides(
+      (
+        outlined-outline-width: 3px,
+      )
+    );
+  }
 
   @include mat.card-overrides(
     (
@@ -49,8 +57,13 @@
       title-text-weight: 700,
     )
   );
-}
 
+  @include mat.dialog-overrides(
+    (
+      container-color: map.get($tertiary-palette, 25),
+    )
+  );
+}
 
 @include mat.typography-hierarchy(
   mat.define-theme(
@@ -58,8 +71,6 @@
       typography: (
         brand-family: $font-primary,
         plain-family: $font-primary,
-        // optional: adjust levels, sizes, weights here
-        // body-large: (size: 1rem, line-height: 1.5rem, weight: 400),,
       ),
     )
   )
@@ -72,8 +83,7 @@ h3,
 h4,
 h5,
 h6,
-p
- {
+p {
   color: map.get(
     $neutral-palette,
     90
@@ -83,11 +93,11 @@ p
 
 button[mat-stroked-button],
 .mat-stroked-button {
-  background: var(--mat-sys-tertiary);
+  background-color: var(--mat-sys-tertiary-container);
 }
 
 .mat-mdc-card {
-  padding: .5rem;
+  padding: 0.5rem;
 }
 
 .mat-mdc-card-title {
@@ -105,7 +115,8 @@ mat-card-actions {
   );
 }
 
-mat-dialog-content, mat-card-content {
+mat-dialog-content,
+mat-card-content {
   mat-form-field {
     width: 100%;
   }
