@@ -2,21 +2,31 @@
   <mat-card-header class="practice-header">
 
     <mat-card-title><button mat-icon-button aria-label="Back" class="back-btn" [routerLink]="['/home']">
-      <mat-icon>arrow_back</mat-icon>
-    </button> {{currentList().name}}</mat-card-title>
+        <mat-icon>arrow_back</mat-icon>
+      </button> {{currentList()?.name || 'Practice'}}</mat-card-title>
     <mat-card-subtitle>{{progress().current}}/{{progress().total}} <span class="accuracy">85%</span></mat-card-subtitle>
   </mat-card-header>
 
   <mat-card-content>
     <section class="word-player">
-      <button mat-fab color="primary" aria-label="Speak word" (click)="speakWord()">
-        <mat-icon>volume_up</mat-icon>
-      </button>
-      <button mat-mini-fab color="accent" aria-label="Slow" (click)="speakWord(true)">
-        <mat-icon>slow_motion_video</mat-icon>
-      </button>
+      <div class="word-player-main center">
+        <button mat-fab color="primary" aria-label="Speak word" (click)="speakWord()">
+          <mat-icon>play_arrow</mat-icon>
+        </button>
+      </div>
+      <div class="word-tools center">
+        <button mat-mini-fab color="accent" aria-label="Slow" (click)="speakWord(true)">
+          <mat-icon>speed_0_5x</mat-icon>
+          <!-- <span style="display:block; font-size:0.95rem; margin-top:0.25rem;">Slow</span> -->
+        </button>
+        <button mat-mini-fab color="accent" aria-label="Use in Sentence" type="button" (click)="generateSentence()"
+          [disabled]="isGenerating() || sentenceService.isBusy()">
+          <mat-icon>menu_book</mat-icon>
+          <!-- <span style="display:block; font-size:0.95rem; margin-top:0.25rem;">Use in sentence</span> -->
+        </button>
+      </div>
       @if (showHint()) {
-      <mat-chip color="primary" selected>{{currentWord()?.charAt(0)}}...</mat-chip>
+      <mat-chip color="primary" selected>{{currentWord().charAt(0)}}...</mat-chip>
       }
     </section>
     @if (showConfetti()) {
@@ -24,22 +34,6 @@
       <glxg-confetti-burst></glxg-confetti-burst>
     </div>
     }
-    <div class="sentence-row">
-      <button mat-flat-button color="secondary" type="button" (click)="generateSentence()"
-        [disabled]="isGenerating() || sentenceService.isBusy()">
-        Use in a Sentence
-      </button>
-      @if (sentenceService.isBusy()) {
-      <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 1rem;">
-        <mat-progress-spinner mode="indeterminate" color="accent" diameter="32"></mat-progress-spinner>
-      </div>
-      }
-      @if (generatedSentence()) {
-      <div class="generated-sentence">
-        {{generatedSentence()}}
-      </div>
-      }
-    </div>
     <form [formGroup]="practiceForm" (ngSubmit)="onSubmit()">
       <mat-form-field appearance="outline">
         <mat-label>Type the word</mat-label>
@@ -59,6 +53,26 @@
     @if (showReveal()) {
     <mat-chip color="accent">Reveal answer?</mat-chip>
     }
+    <div class="sentence-row">
+      @if (sentenceService.isBusy()) {
+      <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 1rem;">
+        <mat-progress-spinner mode="indeterminate" color="accent" diameter="32"></mat-progress-spinner>
+      </div>
+      }
+      @if (generatedSentence()) {
+      <div class="generated-sentence">
+        <h4>Sentence:</h4>
+        <div class="sentence-with-button">
+          <div>{{generatedSentenceForDisplay()}}</div>
+          <button mat-mini-fab color="primary" aria-label="Play sentence" type="button" (click)="playSentence()"
+            >
+            <mat-icon>volume_up</mat-icon>
+          </button>
+        </div>
+      </div>
+      }
+    </div>
+
   </mat-card-content>
 
   <mat-card-actions class="practice-footer">

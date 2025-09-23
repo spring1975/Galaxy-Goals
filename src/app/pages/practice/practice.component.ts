@@ -20,10 +20,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { computed } from '@angular/core';
 import { SpellingListSignalStore } from 'src/app/stores/spelling-list.signalstore';
-import dayjs, { Dayjs } from 'dayjs';
 import { ConfettiBurstComponent } from 'src/app/shared/confetti-burst/confetti-burst.component';
+import { PracticeSignalStore } from './practice.signalstore';
 
 @Component({
   selector: 'glxg-practice',
@@ -46,63 +45,47 @@ import { ConfettiBurstComponent } from 'src/app/shared/confetti-burst/confetti-b
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     { provide: SENTENCE_SERVICE_CONFIG, useValue: { autoInit: false } },
+    { provide: PracticeSignalStore },
   ],
 })
 export class PracticeComponent {
   public sentenceService = inject(SentenceService);
-
-  /** Stores the generated sentence with blank */
-  generatedSentence = signal<string>('');
-
-  /** Indicates if sentence is being generated */
-  isGenerating = signal(false);
-  private confettiTrigger$ = new Subject<void>();
-  accuracyPercent = computed(() => {
-    const total = this.wordIndex() + 1;
-    if (total === 0) return 0;
-    const correct = this.correctOnFirstTry
-      .slice(0, total)
-      .reduce((sum, v) => sum + v, 0);
-    return Math.round((correct / total) * 100);
-  });
   private router = inject(Router);
+  spellingListStore = inject(SpellingListSignalStore);
+  private practiceStore = inject(PracticeSignalStore);
+
+  // Computed signals from the store
+  currentList = this.practiceStore.currentList;
+  wordIndex = this.practiceStore.wordIndex;
+  currentWord = this.practiceStore.currentWord;
+  progress = this.practiceStore.progress;
+  feedback = this.practiceStore.feedback;
+  showHint = this.practiceStore.showHint;
+  showReveal = this.practiceStore.showReveal;
+  showConfetti = this.practiceStore.showConfetti;
+  accuracyPercent = this.practiceStore.accuracyPercent;
+  generatedSentenceForDisplay = this.practiceStore.generatedSentenceForDisplay;
+  generatedSentence = this.practiceStore.generatedSentence;
+  isGenerating = this.practiceStore.isGenerating;
+
+  // Form and other component state
+  practiceForm = new FormGroup({
+    answer: new FormControl(''),
+  });
 
   goHome() {
     this.router.navigate(['/home']);
   }
-  showConfetti = signal(false);
+
+  private confettiTrigger$ = new Subject<void>();
   private correctAnswer$ = new Subject<void>();
   private cancel$ = new Subject<void>();
-  spellingListStore = inject(SpellingListSignalStore);
-  practiceForm = new FormGroup({
-    answer: new FormControl(''),
-  });
-  currentList = signal(
-    this.spellingListStore.getCurrentList() ?? {
-      id: 'demo',
-      name: 'Demo List',
-      words: ['bake', 'grape', 'shape'],
-      created: dayjs(),
-      lastPracticed: undefined,
-    }
-  );
-  wordIndex = signal(0);
-  currentWord = signal(this.currentList().words[0]);
-  progress = signal({ current: 1, total: this.currentList().words.length });
-  feedback = signal<'none' | 'correct' | 'incorrect'>('none');
-  showHint = signal(false);
-  showReveal = signal(false);
   isSlow = signal(false);
   voices: SpeechSynthesisVoice[] = [];
   selectedVoice: SpeechSynthesisVoice | null = null;
-  // Session tracking
-  attempts: number[] = Array(this.currentList().words.length).fill(0);
-  correctOnFirstTry: number[] = Array(this.currentList().words.length).fill(0);
-  incorrectWords: string[] = [];
-  sessionStart: Dayjs = dayjs();
-  sessionEnd?: Dayjs;
 
   constructor() {
+
     // Speech synthesis setup
     if ('speechSynthesis' in window) {
       window.speechSynthesis.onvoiceschanged = () => {
@@ -116,27 +99,38 @@ export class PracticeComponent {
     this.confettiTrigger$
       .pipe(
         switchMap(() => {
-          this.showConfetti.set(true);
+          this.practiceStore.setShowConfetti(true);
           return timer(1200);
         })
       )
-      .subscribe(() => this.showConfetti.set(false));
+      .subscribe(() => {
+        this.practiceStore.setShowConfetti(false);
+      });
   }
 
   async generateSentence() {
-    this.isGenerating.set(true);
-    const word = this.currentWord() ?? '';
-    const sentence = await this.sentenceService.generateSentenceWithBlank(word);
-    const sentenceForDisplay = this.replaceWordWithBlank(sentence, word)
-    this.generatedSentence.set(sentenceForDisplay);
-    this.isGenerating.set(false);
-    this.speakSentence(`. ${sentence}`);
+  this.practiceStore.setGeneratedSentenceForDisplay('');
+  this.practiceStore.setGeneratedSentence('');
+  this.practiceStore.setIsGenerating(true);
+  const word = this.currentWord() ?? '';
+  const sentence = await this.sentenceService.generateSentenceWithBlank(word);
+  const sentenceForDisplay = this.replaceWordWithBlank(sentence, word);
+  this.practiceStore.setGeneratedSentenceForDisplay(sentenceForDisplay);
+  this.practiceStore.setGeneratedSentence(sentence);
+  this.practiceStore.setIsGenerating(false);
+  this.speakSentence(sentence);
+  }
 
+  playSentence() {
+  const sentence = this.generatedSentence();
+    if (sentence) {
+      this.speakSentence(sentence);
+    }
   }
 
   speakSentence(sentence: string) {
     if (!('speechSynthesis' in window)) return;
-    const utter = new SpeechSynthesisUtterance(`. ${sentence}`);
+    const utter = new SpeechSynthesisUtterance(`OK: ${sentence}`);
     utter.voice = this.selectedVoice;
     utter.rate = 0.75;
     window.speechSynthesis.cancel();
@@ -154,89 +148,47 @@ export class PracticeComponent {
 
   onSubmit() {
     if (this.practiceForm.invalid) {
-      this.feedback.set('none');
+      this.practiceStore.setFeedback('none');
       return;
     }
-    const answer = this.practiceForm.value.answer?.trim().toLowerCase();
-    const idx = this.wordIndex();
-    if (typeof idx !== 'number' || idx < 0 || idx >= this.attempts.length)
-      return;
-    if (typeof this.attempts[idx] === 'number') {
-      this.attempts[idx]!++;
-    } else {
-      this.attempts[idx] = 1;
-    }
-    const word = this.currentWord() ?? '';
-    const correct = answer === word.toLowerCase();
-    if (correct) {
-      this.feedback.set('correct');
-      if (this.attempts[idx] === 1) {
-        this.correctOnFirstTry[idx] = 1;
-      }
+    const answer = this.practiceForm.value.answer?.trim().toLowerCase() ?? '';
+    const result = this.practiceStore.submitAnswer(answer);
+    if (!result) return;
+    if (result.correct) {
       this.confettiTrigger$.next();
       this.cancel$.next();
       this.correctAnswer$.next();
     } else {
-      this.feedback.set('incorrect');
       this.speakWord();
-      if (word && !this.incorrectWords.includes(word)) {
-        this.incorrectWords.push(word);
-      }
       // TODO: handle retries, show hint/reveal after attempts
     }
   }
 
   skip() {
-    // Count as incorrect, update stats
-    const idx = this.wordIndex();
-    if (typeof idx !== 'number' || idx < 0 || idx >= this.attempts.length) {
-      this.nextWord();
-      return;
-    }
-    if (typeof this.attempts[idx] === 'number') {
-      this.attempts[idx]!++;
-    } else {
-      this.attempts[idx] = 1;
-    }
-    const word = this.currentWord() ?? '';
-    if (word && !this.incorrectWords.includes(word)) {
-      this.incorrectWords.push(word);
-    }
-    this.nextWord();
+    this.practiceStore.skipCurrentWord();
   }
 
   nextWord() {
     this.cancel$.next();
-    const nextIdx = this.wordIndex() + 1;
-    if (nextIdx < this.currentList().words.length) {
-      this.wordIndex.set(nextIdx);
-      this.currentWord.set(this.currentList().words[nextIdx]);
-      this.progress.set({
-        current: nextIdx + 1,
-        total: this.currentList().words.length,
-      });
-      this.practiceForm.reset();
-      this.feedback.set('none');
-    } else {
-      // Session complete
-      this.sessionEnd = dayjs();
-      // TODO: Save session stats, show results screen
-    }
+    this.practiceStore.advanceToNextWord();
+    this.practiceForm.reset();
   }
 
   showHintToggle() {
-    this.showHint.set(true);
+    this.practiceStore.setShowHint(true);
   }
 
   showRevealToggle() {
-    this.showReveal.set(true);
+    this.practiceStore.setShowReveal(true);
   }
 
-
   private replaceWordWithBlank(sentence: string, targetWord: string): string {
-          // Replace all forms of the target word with blank
-      const wordRegex = new RegExp(`${this.escapeRegex(targetWord)}(s|es|ed|ing)?`, 'gi');
-      return sentence.replace(wordRegex, '______');
+    // Replace all forms of the target word with blank
+    const wordRegex = new RegExp(
+      `${this.escapeRegex(targetWord)}(s|es|ed|ing)?`,
+      'gi'
+    );
+    return sentence.replace(wordRegex, '______');
   }
 
   private escapeRegex(word: string): string {
