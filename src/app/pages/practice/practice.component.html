@@ -15,15 +15,19 @@
         </button>
       </div>
       <div class="word-tools center">
-        <button mat-mini-fab color="accent" aria-label="Slow" (click)="speakWord(true)">
-          <mat-icon>speed_0_5x</mat-icon>
-          <!-- <span style="display:block; font-size:0.95rem; margin-top:0.25rem;">Slow</span> -->
-        </button>
-        <button mat-mini-fab color="accent" aria-label="Use in Sentence" type="button" (click)="generateSentence()"
-          [disabled]="isGenerating() || sentenceService.isBusy()">
-          <mat-icon>menu_book</mat-icon>
-          <!-- <span style="display:block; font-size:0.95rem; margin-top:0.25rem;">Use in sentence</span> -->
-        </button>
+        <div class="labeled-fab">
+          <button mat-mini-fab color="accent" aria-label="Slow" (click)="speakWord(true)">
+            <mat-icon>speed_0_5x</mat-icon>
+          </button>
+          <span class="label">Slow</span>
+        </div>
+        <div class="labeled-fab">
+          <button mat-mini-fab color="accent" aria-label="Use in Sentence" type="button" (click)="generateSentence()"
+            [disabled]="isGenerating() || sentenceService.isBusy()">
+            <mat-icon>menu_book</mat-icon>
+          </button>
+          <span class="label">Sentence</span>
+        </div>
       </div>
       @if (showHint()) {
       <mat-chip color="primary" selected>{{currentWord().charAt(0)}}...</mat-chip>
@@ -64,8 +68,7 @@
         <h4>Sentence:</h4>
         <div class="sentence-with-button">
           <div>{{generatedSentenceForDisplay()}}</div>
-          <button mat-mini-fab color="primary" aria-label="Play sentence" type="button" (click)="playSentence()"
-            >
+          <button mat-mini-fab color="primary" aria-label="Play sentence" type="button" (click)="playSentence()">
             <mat-icon>volume_up</mat-icon>
           </button>
         </div>
