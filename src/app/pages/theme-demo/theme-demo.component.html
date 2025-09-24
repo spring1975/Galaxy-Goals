@@ -6,11 +6,18 @@
         <input matInput [formControl]="chipInput" (keyup.enter)="addChip()" placeholder="Type and press Enter" />
       </mat-form-field>
 
-      <mat-chip-set aria-label="Fish selection">
-        <mat-chip>One fish</mat-chip>
-        <mat-chip>Two fish</mat-chip>
-        <mat-chip>Three fish</mat-chip>
-        <mat-chip disabled>Four fish</mat-chip>
+
+      <mat-chip-set aria-label="Chip selection">
+        @for (chip of chips; let i = $index; track chip) {
+          <mat-chip [removable]="true" (removed)="removeChip(i)">
+            {{ chip.label }}
+            @if (chips.length > 1) {
+              <button matChipRemove>
+                <mat-icon>cancel</mat-icon>
+              </button>
+            }
+          </mat-chip>
+        }
       </mat-chip-set>
 
       <section>

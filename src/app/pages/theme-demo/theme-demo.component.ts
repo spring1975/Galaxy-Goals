@@ -27,22 +27,18 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class ThemeDemoComponent {
   chipInput = new FormControl('');
-  chips: { label: string; color: 'primary' | 'accent' | 'warn' }[] = [
-    { label: 'Primary', color: 'primary' },
-    { label: 'Secondary', color: 'accent' },
-    { label: 'Warn', color: 'warn' },
+  chips: { label: string; }[] = [
+    { label: 'Primary' },
+    { label: 'Tertiary' },
+    { label: 'Default' },
   ];
 
   addChip() {
     const value = this.chipInput.value?.trim();
     if (value) {
-      const color =
-        this.chips.length % 3 === 0
-          ? 'primary'
-          : this.chips.length % 3 === 1
-          ? 'accent'
-          : 'warn';
-      this.chips.push({ label: value, color });
+      const chipData: { label: string;} = { label: value };
+
+      this.chips.push(chipData);
       this.chipInput.setValue('');
     }
   }

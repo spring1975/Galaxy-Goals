@@ -11,6 +11,7 @@ export interface SpellingList {
   words: string[];
   created: Dayjs;
   lastPracticed?: Dayjs;
+  lastSessionAccuracy?: number;
 }
 
 

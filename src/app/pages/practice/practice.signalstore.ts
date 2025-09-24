@@ -114,215 +114,227 @@ export const PracticeSignalStore = signalStore(
       };
     }),
   })),
-  withMethods((store) => ({
-    /**
-     * Helper function to create initial word attempts array
-     */
-    createWordAttemptsArray(words: string[]): WordAttempt[] {
-      return words.map(word => ({
-        word,
-        attempts: [],
-        correctOnFirstTry: false,
-        totalAttempts: 0,
-        isComplete: false,
-        wasSkipped: false,
-        wasRevealed: false,
-      }));
-    },
+  withMethods((store) => {
+    // Inject SpellingListStore at the top of the methods scope
+    const spellingListStore = inject(SpellingListSignalStore);
 
-    /**
-     * Initialize session with a list
-     */
-    initializeSession(list: SpellingList): void {
-      patchState(store, {
-        currentList: list,
-        wordIndex: 0,
-        generatedSentence: '',
-        generatedSentenceForDisplay: '',
-        isGenerating: false,
-        feedback: 'none',
-        showConfetti: false,
-        wordAttempts: this.createWordAttemptsArray(list.words),
-        currentWordAttemptCount: 0,
-        sessionStart: dayjs(),
-        sessionEnd: undefined,
-      });
-    },
+    return {
+      /**
+       * Helper function to create initial word attempts array
+       */
+      createWordAttemptsArray(words: string[]): WordAttempt[] {
+        return words.map(word => ({
+          word,
+          attempts: [],
+          correctOnFirstTry: false,
+          totalAttempts: 0,
+          isComplete: false,
+          wasSkipped: false,
+          wasRevealed: false,
+        }));
+      },
 
-    // Sentence generation methods
-    setGeneratedSentenceForDisplay(sentence: string): void {
-      patchState(store, { generatedSentenceForDisplay: sentence });
-    },
-    setGeneratedSentence(sentence: string): void {
-      patchState(store, { generatedSentence: sentence });
-    },
-    setIsGenerating(isGenerating: boolean): void {
-      patchState(store, { isGenerating });
-    },
-
-    // UI state methods
-    setFeedback(feedback: 'none' | 'correct' | 'incorrect'): void {
-      patchState(store, { feedback });
-    },
-    setShowConfetti(show: boolean): void {
-      patchState(store, { showConfetti: show });
-    },
-
-    /**
-     * Handles advancing to the next word, including session completion logic.
-     */
-    advanceToNextWord(): void {
-      const nextIdx = store.wordIndex() + 1;
-      const currentList = store.currentList();
-      if (currentList && nextIdx < currentList.words.length) {
+      /**
+       * Initialize session with a list
+       */
+      initializeSession(list: SpellingList): void {
         patchState(store, {
-          wordIndex: nextIdx,
+          currentList: list,
+          wordIndex: 0,
+          generatedSentence: '',
+          generatedSentenceForDisplay: '',
+          isGenerating: false,
+          feedback: 'none',
+          showConfetti: false,
+          wordAttempts: this.createWordAttemptsArray(list.words),
+          currentWordAttemptCount: 0,
+          sessionStart: dayjs(),
+          sessionEnd: undefined,
+        });
+      },
+
+      // Sentence generation methods
+      setGeneratedSentenceForDisplay(sentence: string): void {
+        patchState(store, { generatedSentenceForDisplay: sentence });
+      },
+
+      setGeneratedSentence(sentence: string): void {
+        patchState(store, { generatedSentence: sentence });
+      },
+
+      setIsGenerating(isGenerating: boolean): void {
+        patchState(store, { isGenerating });
+      },
+
+      // UI state methods
+      setFeedback(feedback: 'none' | 'correct' | 'incorrect'): void {
+        patchState(store, { feedback });
+      },
+
+      setShowConfetti(show: boolean): void {
+        patchState(store, { showConfetti: show });
+      },
+
+      /**
+       * Handles advancing to the next word, including session completion logic.
+       */
+      advanceToNextWord(): void {
+        const nextIdx = store.wordIndex() + 1;
+        const currentList = store.currentList();
+        if (currentList && nextIdx < currentList.words.length) {
+          patchState(store, {
+            wordIndex: nextIdx,
+            feedback: 'none',
+            generatedSentence: '',
+            generatedSentenceForDisplay: '',
+            currentWordAttemptCount: 0,
+          });
+        } else {
+          // Session complete
+          patchState(store, {
+            sessionEnd: dayjs(),
+          });
+          // Save last session accuracy to SpellingList
+          const attempts = store.wordAttempts();
+          const completed = attempts.filter(a => a.isComplete);
+          const firstTryCorrect = completed.filter(a => a.correctOnFirstTry).length;
+          const accuracy = completed.length > 0 ? Math.round((firstTryCorrect / completed.length) * 100) : 0;
+          if (currentList) {
+            spellingListStore.updateList({ ...currentList, lastSessionAccuracy: accuracy });
+          }
+        }
+      },
+
+      /**
+       * Handles answer submission with enhanced retry logic
+       */
+      submitAnswer(answer: string): { correct: boolean; word: string } | null {
+        const idx = store.wordIndex();
+        const wordAttempts = [...store.wordAttempts()];
+        const currentWord = store.currentWord();
+
+        if (idx < 0 || idx >= wordAttempts.length || !currentWord) {
+          patchState(store, { feedback: 'none' });
+          return null;
+        }
+
+        const wordAttempt = wordAttempts[idx];
+        if (!wordAttempt || wordAttempt.isComplete) {
+          return null; // Word already completed
+        }
+
+        const correct = answer.toLowerCase() === currentWord.toLowerCase();
+        const newAttemptCount = store.currentWordAttemptCount() + 1;
+
+        // Update the word attempt
+        wordAttempt.attempts.push(answer);
+        wordAttempt.totalAttempts = newAttemptCount;
+
+        if (correct) {
+          wordAttempt.isComplete = true;
+          wordAttempt.correctOnFirstTry = newAttemptCount === 1;
+          patchState(store, {
+            wordAttempts,
+            feedback: 'correct',
+            currentWordAttemptCount: 0,
+          });
+        } else {
+          patchState(store, {
+            wordAttempts,
+            feedback: 'incorrect',
+            currentWordAttemptCount: newAttemptCount,
+          });
+        }
+
+        return { correct, word: currentWord };
+      },
+
+      /**
+       * Skip the current word (mark as missed)
+       */
+      skipCurrentWord(): void {
+        const idx = store.wordIndex();
+        const wordAttempts = [...store.wordAttempts()];
+        const currentWord = store.currentWord();
+
+        if (idx >= 0 && idx < wordAttempts.length && currentWord) {
+          const wordAttempt = wordAttempts[idx];
+          if (wordAttempt && !wordAttempt.isComplete) {
+            wordAttempt.isComplete = true;
+            wordAttempt.wasSkipped = true;
+            patchState(store, {
+              wordAttempts,
+              feedback: 'none',
+              currentWordAttemptCount: 0,
+            });
+          }
+        }
+      },
+
+      /**
+       * Reveal the current word (show answer)
+       */
+      revealAnswer(): void {
+        const idx = store.wordIndex();
+        const wordAttempts = [...store.wordAttempts()];
+        const currentWord = store.currentWord();
+
+        if (idx >= 0 && idx < wordAttempts.length && currentWord) {
+          const wordAttempt = wordAttempts[idx];
+          if (wordAttempt && !wordAttempt.isComplete) {
+            wordAttempt.isComplete = true;
+            wordAttempt.wasRevealed = true;
+            patchState(store, {
+              wordAttempts,
+              feedback: 'none',
+              currentWordAttemptCount: 0,
+            });
+          }
+        }
+      },
+
+      /**
+       * Reset the session to start fresh
+       */
+      resetSession(newList?: SpellingList): void {
+        if (newList) {
+          this.initializeSession(newList);
+        } else {
+          const currentList = store.currentList();
+          if (currentList) {
+            this.initializeSession(currentList);
+          }
+        }
+      },
+
+      resetWordState(): void {
+        patchState(store, {
           feedback: 'none',
           generatedSentence: '',
           generatedSentenceForDisplay: '',
           currentWordAttemptCount: 0,
         });
-      } else {
-        // Session complete
-        patchState(store, {
-          sessionEnd: dayjs(),
-        });
-      }
-    },
+      },
 
-    /**
-     * Handles answer submission with enhanced retry logic
-     */
-    submitAnswer(answer: string): { correct: boolean; word: string } | null {
-      const idx = store.wordIndex();
-      const wordAttempts = [...store.wordAttempts()];
-      const currentWord = store.currentWord();
+      /**
+       * Get words that were missed (skipped or revealed)
+       */
+      getMissedWords(): string[] {
+        return store.wordAttempts()
+          .filter(attempt => attempt.wasSkipped || attempt.wasRevealed)
+          .map(attempt => attempt.word);
+      },
 
-      if (idx < 0 || idx >= wordAttempts.length || !currentWord) {
-        patchState(store, { feedback: 'none' });
-        return null;
-      }
-
-      const wordAttempt = wordAttempts[idx];
-      if (!wordAttempt || wordAttempt.isComplete) {
-        return null; // Word already completed
-      }
-
-      const correct = answer.toLowerCase() === currentWord.toLowerCase();
-      const newAttemptCount = store.currentWordAttemptCount() + 1;
-
-      // Update the word attempt
-      wordAttempt.attempts.push(answer);
-      wordAttempt.totalAttempts = newAttemptCount;
-
-      if (correct) {
-        wordAttempt.isComplete = true;
-        wordAttempt.correctOnFirstTry = newAttemptCount === 1;
-        patchState(store, {
-          feedback: 'correct',
-          wordAttempts,
-          currentWordAttemptCount: newAttemptCount,
-        });
-      } else {
-        // Incorrect answer
-        patchState(store, {
-          feedback: 'incorrect',
-          wordAttempts,
-          currentWordAttemptCount: newAttemptCount,
-        });
-      }
-
-      return {
-        correct,
-        word: currentWord
-      };
-    },
-
-    /**
-     * Handles skipping the current word
-     */
-    skipCurrentWord(): void {
-      const idx = store.wordIndex();
-      const wordAttempts = [...store.wordAttempts()];
-
-      if (idx >= 0 && idx < wordAttempts.length) {
-        const wordAttempt = wordAttempts[idx];
-        if (wordAttempt && !wordAttempt.isComplete) {
-          wordAttempt.isComplete = true;
-          wordAttempt.wasSkipped = true;
-          wordAttempt.totalAttempts = store.currentWordAttemptCount();
-
-          patchState(store, {
-            wordAttempts,
-            feedback: 'none',
-          });
-        }
-      }
-
-      this.advanceToNextWord();
-    },
-
-    /**
-     * Reveals the answer for the current word
-     */
-    revealAnswer(): void {
-      const idx = store.wordIndex();
-      const wordAttempts = [...store.wordAttempts()];
-
-      if (idx >= 0 && idx < wordAttempts.length) {
-        const wordAttempt = wordAttempts[idx];
-        if (wordAttempt && !wordAttempt.isComplete) {
-          wordAttempt.isComplete = true;
-          wordAttempt.wasRevealed = true;
-          wordAttempt.totalAttempts = store.currentWordAttemptCount();
-
-          patchState(store, {
-            wordAttempts,
-            feedback: 'correct', // Show as correct for UI purposes
-          });
-        }
-      }
-    },
-
-    // Reset methods
-    resetSession(newList?: SpellingList): void {
-      if (newList) {
-        this.initializeSession(newList);
-      } else {
-        const currentList = store.currentList();
-        if (currentList) {
-          this.initializeSession(currentList);
-        }
-      }
-    },
-
-    resetWordState(): void {
-      patchState(store, {
-        feedback: 'none',
-        generatedSentence: '',
-        generatedSentenceForDisplay: '',
-        currentWordAttemptCount: 0,
-      });
-    },
-
-    /**
-     * Get words that were missed (skipped or revealed)
-     */
-    getMissedWords(): string[] {
-      return store.wordAttempts()
-        .filter(attempt => attempt.wasSkipped || attempt.wasRevealed)
-        .map(attempt => attempt.word);
-    },
-
-    /**
-     * Get words that required retries but were eventually correct
-     */
-    getRetriedWords(): string[] {
-      return store.wordAttempts()
-        .filter(attempt => attempt.isComplete && !attempt.correctOnFirstTry && !attempt.wasSkipped && !attempt.wasRevealed)
-        .map(attempt => attempt.word);
-    },
-  })),
+      /**
+       * Get words that required retries but were eventually correct
+       */
+      getRetriedWords(): string[] {
+        return store.wordAttempts()
+          .filter(attempt => attempt.isComplete && !attempt.correctOnFirstTry && !attempt.wasSkipped && !attempt.wasRevealed)
+          .map(attempt => attempt.word);
+      },
+    };
+  }),
   withHooks({
     onInit(store) {
       // Get SpellingListSignalStore instance
