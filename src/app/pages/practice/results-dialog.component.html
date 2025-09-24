@@ -1,0 +1,48 @@
+<h2 mat-dialog-title>Session Results</h2>
+
+<mat-dialog-content>
+  <h1>{{data.accuracy}}%</h1>
+  <p class="accuracy-label">Session Accuracy</p>
+  <p class="time-label">Time: {{data.timeSpent}}</p>
+
+  <dl class="results-breakdown">
+    <dt><h2>{{data.firstTryCorrect}}</h2></dt>
+    <dd>First-try correct</dd>
+    <dt><h2>{{data.retried}}</h2></dt>
+    <dd>Correct after retries</dd>
+    <dt><h2>{{data.missed}}</h2></dt>
+    <dd>Missed</dd>
+  </dl>
+
+  <div class="words-summary">
+    <h3>Word Results</h3>
+    <mat-chip-set aria-label="word results">
+      <mat-chip class="with-icon" *ngFor="let attempt of data.wordAttempts" selected>
+        <ng-container *ngIf="attempt.correctOnFirstTry">
+          <mat-icon>check</mat-icon>
+        </ng-container>
+        <ng-container
+          *ngIf="!attempt.correctOnFirstTry && attempt.isComplete && !attempt.wasSkipped && !attempt.wasRevealed">
+          <mat-icon>refresh</mat-icon>
+        </ng-container>
+        <ng-container
+          *ngIf="!attempt.correctOnFirstTry && (!attempt.isComplete || attempt.wasSkipped || attempt.wasRevealed)">
+          <mat-icon>close</mat-icon>
+        </ng-container>
+        {{attempt.word}}
+      </mat-chip>
+    </mat-chip-set>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+  <button mat-raised-button color="primary" (click)="dialogRef.close('practiceMissed')">
+    Practice missed words
+  </button>
+  <button mat-stroked-button color="primary" (click)="dialogRef.close('practiceAll')">
+    Practice whole list again
+  </button>
+  <button mat-button mat-dialog-close>
+    Back to Lists
+  </button>
+</mat-dialog-actions>

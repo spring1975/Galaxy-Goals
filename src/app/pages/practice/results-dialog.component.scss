@@ -1,0 +1,43 @@
+// .mat-mdc-dialog-content {
+//   display: flex;
+//   flex-direction: column;
+// }
+.results-header {
+  margin-bottom: 1.5rem;
+}
+.accuracy-label,
+.time-label {
+  font-size: 1rem;
+  color: #555;
+}
+.results-breakdown {
+  dd {
+    margin: 0 1.5rem 0 0.5rem;
+  }
+  display: flex;
+  margin-bottom: 1.5rem;
+}
+h2 {
+  margin: 0;
+}
+.words-summary {
+  margin-bottom: 1.5rem;
+}
+.word-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.results-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.mat-mdc-dialog-content {
+  max-height: none;
+  overflow: visible;
+}

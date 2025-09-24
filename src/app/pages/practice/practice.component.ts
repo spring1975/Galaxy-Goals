@@ -24,6 +24,8 @@ import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { SpellingListSignalStore } from 'src/app/stores/spelling-list.signalstore';
 import { PracticeSignalStore, WordAttempt } from './practice.signalstore';
 import { WordResultDialogComponent, WordResultDialogData } from './word-result-dialog/word-result-dialog.component';
+import dayjs from 'dayjs';
+import { ResultsDialogComponent, ResultsDialogData } from './results-dialog.component';
 
 @Component({
   selector: 'glxg-practice',
@@ -188,8 +190,8 @@ export class PracticeComponent {
     // Check if this is the last word
     const currentProgress = this.progress();
     if (currentProgress.current >= currentProgress.total) {
-      // Session complete - show results
-      this.showResults();
+      // Session complete - show results dialog
+      this.showResultsDialog();
     } else {
       this.practiceStore.advanceToNextWord();
       this.practiceForm.reset();
@@ -198,10 +200,44 @@ export class PracticeComponent {
     }
   }
 
-  showResults() {
+  showResultsDialog() {
     // Mark session as complete
     this.practiceStore.advanceToNextWord();
-    // Results will be shown via template when isComplete is true
+    // Calculate time spent
+    const start = this.practiceStore.sessionStart();
+    const end = this.practiceStore.sessionEnd() || dayjs();
+    const timeSpent = end.diff(start, 'second');
+    const stats = this.sessionStats();
+    // Map wordAttempts for dialog
+    const wordAttempts = this.practiceStore.wordAttempts().map(a => ({
+      word: a.word,
+      correctOnFirstTry: a.correctOnFirstTry,
+      isComplete: a.isComplete,
+      wasSkipped: a.wasSkipped,
+      wasRevealed: a.wasRevealed,
+      attempts: a.attempts.length
+    }));
+    const dialogRef = this.dialog.open(ResultsDialogComponent, {
+      data: {
+        accuracy: stats.accuracy,
+        timeSpent: `${timeSpent}s`,
+        firstTryCorrect: stats.firstTryCorrect,
+        retried: stats.retried,
+        missed: stats.missed,
+        wordAttempts
+      } as ResultsDialogData,
+      panelClass: 'results-dialog-panel',
+      disableClose: true
+    });
+    dialogRef.afterClosed().subscribe((action) => {
+      if (action === 'practiceMissed') {
+        this.practiceMissedWords();
+      } else if (action === 'practiceAll') {
+        this.practiceWholeListAgain();
+      } else {
+        this.router.navigate(['/home']);
+      }
+    });
   }
 
   practiceMissedWords() {
