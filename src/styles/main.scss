@@ -46,3 +46,9 @@ glxg-practice {
     margin: 0;
   }
 }
+
+/* Global confetti overlay styling */
+.global-confetti-overlay {
+  pointer-events: none;
+  z-index: 2000 !important; // Higher than Material dialog overlays
+}

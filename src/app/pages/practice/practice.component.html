@@ -1,13 +1,81 @@
 <mat-card class="practice-container">
   <mat-card-header class="practice-header">
-
-    <mat-card-title><button mat-icon-button aria-label="Back" class="back-btn" [routerLink]="['/home']">
+    <mat-card-title>
+      <button mat-icon-button aria-label="Back" class="back-btn" [routerLink]="['/home']">
         <mat-icon>arrow_back</mat-icon>
-      </button> {{currentList()?.name || 'Practice'}}</mat-card-title>
-    <mat-card-subtitle>{{progress().current}}/{{progress().total}} <span class="accuracy">85%</span></mat-card-subtitle>
+      </button>
+      @if (isComplete()) {
+        Results - {{currentList()?.name}}
+      } @else {
+        {{currentList()?.name || 'Practice'}}
+      }
+    </mat-card-title>
+    @if (!isComplete()) {
+    <mat-card-subtitle>
+      {{progress().current}}/{{progress().total}}
+      <span class="accuracy">{{accuracyPercent()}}% accuracy</span>
+    </mat-card-subtitle>
+    }
   </mat-card-header>
 
   <mat-card-content>
+    @if (isComplete()) {
+    <!-- Results Screen -->
+    <div class="results-container">
+      <div class="results-header">
+        <div class="big-accuracy">{{sessionStats().accuracy}}%</div>
+        <p class="accuracy-label">Session Accuracy</p>
+      </div>
+
+      <div class="results-breakdown">
+        <div class="stat-item">
+          <span class="stat-number">{{sessionStats().firstTryCorrect}}</span>
+          <span class="stat-label">First-try correct</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">{{sessionStats().retried}}</span>
+          <span class="stat-label">Correct after retries</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">{{sessionStats().missed}}</span>
+          <span class="stat-label">Missed</span>
+        </div>
+      </div>
+
+      <div class="words-summary">
+        <h3>Word Results</h3>
+        <div class="word-chips">
+          @for (attempt of practiceStore.wordAttempts(); track attempt.word) {
+          <mat-chip [class]="getWordChipClass(attempt)" selected>
+            @if (attempt.correctOnFirstTry) {
+            <mat-icon>check</mat-icon>
+            } @else if (attempt.isComplete && !attempt.wasSkipped && !attempt.wasRevealed) {
+            <mat-icon>refresh</mat-icon>
+            } @else {
+            <mat-icon>close</mat-icon>
+            }
+            {{attempt.word}}
+          </mat-chip>
+          }
+        </div>
+      </div>
+
+      <div class="results-actions">
+        @if (practiceStore.getMissedWords().length > 0 || practiceStore.getRetriedWords().length > 0) {
+        <button mat-raised-button color="primary" (click)="practiceMissedWords()">
+          Practice missed words
+        </button>
+        }
+        <button mat-stroked-button color="primary" (click)="practiceWholeListAgain()">
+          Practice whole list again
+        </button>
+        <button mat-button [routerLink]="['/home']">
+          Back to Lists
+        </button>
+      </div>
+    </div>
+    } @else {
+    <!-- Practice Screen -->
     <section class="word-player">
       <div class="word-player-main center">
         <button mat-fab color="primary" aria-label="Speak word" (click)="speakWord()">
@@ -29,34 +97,51 @@
           <span class="label">Sentence</span>
         </div>
       </div>
-      @if (showHint()) {
-      <mat-chip color="primary" selected>{{currentWord().charAt(0)}}...</mat-chip>
+      @if (shouldShowHint()) {
+      <div class="hint-section">
+        <mat-chip color="primary" selected>
+          Hint: {{currentWord().charAt(0)}}{{currentWord().length > 1 ? '...' + currentWord().charAt(currentWord().length - 1) : ''}}
+        </mat-chip>
+      </div>
       }
     </section>
-    @if (showConfetti()) {
-    <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
-      <glxg-confetti-burst></glxg-confetti-burst>
-    </div>
-    }
     <form [formGroup]="practiceForm" (ngSubmit)="onSubmit()">
-      <mat-form-field appearance="outline">
+      <mat-form-field appearance="outline" class="answer-input">
         <mat-label>Type the word</mat-label>
-        <input matInput formControlName="answer" type="text" autofocus aria-label="Type the word" />
+        <input matInput formControlName="answer" type="text" autofocus aria-label="Type the word"
+               [class.shake]="feedback() === 'incorrect'" />
+        @if (!practiceForm.value.answer) {
+        <mat-error>Type the word before submitting.</mat-error>
+        }
       </mat-form-field>
       <div class="actions-row">
-        <button mat-flat-button color="primary" type="submit">Submit</button>
+        <button mat-flat-button color="primary" type="submit"
+                [disabled]="!practiceForm.value.answer?.trim()">
+          Submit
+        </button>
         <button mat-button color="secondary" type="button" (click)="skip()">Skip</button>
       </div>
     </form>
-    @if (feedback() === 'correct') {
-    <mat-chip color="primary" selected aria-live="polite">Nice! '{{currentWord()}}' is correct.</mat-chip>
-    }
-    @else if (feedback() === 'incorrect') {
-    <mat-chip color="warn" selected aria-live="polite">Almost! Try again.</mat-chip>
-    }
-    @if (showReveal()) {
-    <mat-chip color="accent">Reveal answer?</mat-chip>
-    }
+    <div class="feedback-section">
+      @if (feedback() === 'correct' && !currentWordAttempt()?.wasRevealed) {
+      <mat-chip color="primary" selected aria-live="polite">
+        Nice! '{{currentWord()}}' is correct.
+      </mat-chip>
+      }
+      @else if (feedback() === 'correct' && currentWordAttempt()?.wasRevealed) {
+      <mat-chip color="accent" selected aria-live="polite">
+        The answer was '{{currentWord()}}'. Let's keep practicing!
+      </mat-chip>
+      }
+
+      @if (shouldShowReveal() && feedback() === 'incorrect') {
+      <div class="reveal-section">
+        <button mat-stroked-button color="accent" (click)="revealAnswer()">
+          Reveal answer?
+        </button>
+      </div>
+      }
+    </div>
     <div class="sentence-row">
       @if (sentenceService.isBusy()) {
       <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 1rem;">
@@ -75,14 +160,16 @@
       </div>
       }
     </div>
-
+    }
   </mat-card-content>
 
+  @if (!isComplete()) {
+  <!-- Practice Footer - only show during practice -->
   <mat-card-actions class="practice-footer">
-    <p class="accuracy">Accuracy: {{accuracyPercent()}}%</p>
-    <p class="words-left">{{progress().total - progress().current}} left</p>
-    @if (feedback() === 'correct' || showReveal()) {
-    <button mat-raised-button color="primary" (click)="nextWord()">Next</button>
-    }
+    <div class="footer-stats">
+      <p class="accuracy">Accuracy: {{accuracyPercent()}}%</p>
+      <p class="words-left">{{progress().total - progress().current}} left</p>
+    </div>
   </mat-card-actions>
+  }
 </mat-card>

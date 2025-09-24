@@ -9,8 +9,7 @@ import {
   SENTENCE_SERVICE_CONFIG,
 } from 'src/app/shared/sentence/sentence.service';
 import { Router, RouterModule } from '@angular/router';
-import { Subject, timer } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
@@ -20,9 +19,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { SpellingListSignalStore } from 'src/app/stores/spelling-list.signalstore';
-import { ConfettiBurstComponent } from 'src/app/shared/confetti-burst/confetti-burst.component';
-import { PracticeSignalStore } from './practice.signalstore';
+import { PracticeSignalStore, WordAttempt } from './practice.signalstore';
+import { WordResultDialogComponent, WordResultDialogData } from './word-result-dialog/word-result-dialog.component';
 
 @Component({
   selector: 'glxg-practice',
@@ -37,7 +38,8 @@ import { PracticeSignalStore } from './practice.signalstore';
     MatInputModule,
     MatChipsModule,
     MatProgressSpinnerModule,
-    ConfettiBurstComponent,
+    MatSnackBarModule,
+    MatDialogModule,
     RouterModule,
   ],
   templateUrl: './practice.component.html',
@@ -51,8 +53,10 @@ import { PracticeSignalStore } from './practice.signalstore';
 export class PracticeComponent {
   public sentenceService = inject(SentenceService);
   private router = inject(Router);
+  private snackBar = inject(MatSnackBar);
+  private dialog = inject(MatDialog);
   spellingListStore = inject(SpellingListSignalStore);
-  private practiceStore = inject(PracticeSignalStore);
+  practiceStore = inject(PracticeSignalStore);
 
   // Computed signals from the store
   currentList = this.practiceStore.currentList;
@@ -60,13 +64,15 @@ export class PracticeComponent {
   currentWord = this.practiceStore.currentWord;
   progress = this.practiceStore.progress;
   feedback = this.practiceStore.feedback;
-  showHint = this.practiceStore.showHint;
-  showReveal = this.practiceStore.showReveal;
-  showConfetti = this.practiceStore.showConfetti;
   accuracyPercent = this.practiceStore.accuracyPercent;
   generatedSentenceForDisplay = this.practiceStore.generatedSentenceForDisplay;
   generatedSentence = this.practiceStore.generatedSentence;
   isGenerating = this.practiceStore.isGenerating;
+  shouldShowHint = this.practiceStore.shouldShowHint;
+  shouldShowReveal = this.practiceStore.shouldShowReveal;
+  currentWordAttempt = this.practiceStore.currentWordAttempt;
+  sessionStats = this.practiceStore.sessionStats;
+  isComplete = this.practiceStore.isComplete;
 
   // Form and other component state
   practiceForm = new FormGroup({
@@ -77,7 +83,6 @@ export class PracticeComponent {
     this.router.navigate(['/home']);
   }
 
-  private confettiTrigger$ = new Subject<void>();
   private correctAnswer$ = new Subject<void>();
   private cancel$ = new Subject<void>();
   isSlow = signal(false);
@@ -95,17 +100,6 @@ export class PracticeComponent {
       this.voices = window.speechSynthesis.getVoices();
       this.selectedVoice = this.voices[0] || null;
     }
-    // Confetti observable setup
-    this.confettiTrigger$
-      .pipe(
-        switchMap(() => {
-          this.practiceStore.setShowConfetti(true);
-          return timer(1200);
-        })
-      )
-      .subscribe(() => {
-        this.practiceStore.setShowConfetti(false);
-      });
   }
 
   async generateSentence() {
@@ -151,35 +145,100 @@ export class PracticeComponent {
       this.practiceStore.setFeedback('none');
       return;
     }
-    const answer = this.practiceForm.value.answer?.trim().toLowerCase() ?? '';
+    const answer = this.practiceForm.value.answer?.trim() ?? '';
+    if (!answer) {
+      this.practiceStore.setFeedback('none');
+      return;
+    }
+
     const result = this.practiceStore.submitAnswer(answer);
     if (!result) return;
+
     if (result.correct) {
-      this.confettiTrigger$.next();
       this.cancel$.next();
       this.correctAnswer$.next();
+      // Clear the form for correct answers
+      this.practiceForm.patchValue({ answer: '' });
+      // Show success dialog
+      this.showWordResultDialog(true, this.currentWord() || '');
     } else {
+      // Show toast message for incorrect answer
+      this.snackBar.open('Almost! Try again.', '', {
+        duration: 2000,
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+        panelClass: ['incorrect-toast']
+      });
+
       this.speakWord();
-      // TODO: handle retries, show hint/reveal after attempts
+      // Hint/reveal visibility is now handled automatically by computed properties
+      // Clear the form so user can try again
+      this.practiceForm.patchValue({ answer: '' });
     }
   }
 
   skip() {
     this.practiceStore.skipCurrentWord();
+    this.practiceForm.reset();
   }
 
   nextWord() {
     this.cancel$.next();
+
+    // Check if this is the last word
+    const currentProgress = this.progress();
+    if (currentProgress.current >= currentProgress.total) {
+      // Session complete - show results
+      this.showResults();
+    } else {
+      this.practiceStore.advanceToNextWord();
+      this.practiceForm.reset();
+    }
+  }
+
+  showResults() {
+    // Mark session as complete
     this.practiceStore.advanceToNextWord();
-    this.practiceForm.reset();
+    // Results will be shown via template when isComplete is true
   }
 
-  showHintToggle() {
-    this.practiceStore.setShowHint(true);
+  practiceMissedWords() {
+    const missedWords = this.practiceStore.getMissedWords();
+    const retriedWords = this.practiceStore.getRetriedWords();
+    const wordsToRetry = [...missedWords, ...retriedWords];
+
+    if (wordsToRetry.length > 0 && this.currentList()) {
+      const practiceList = {
+        ...this.currentList()!,
+        name: `${this.currentList()!.name} - Missed Words`,
+        words: wordsToRetry
+      };
+      this.practiceStore.resetSession(practiceList);
+    }
   }
 
-  showRevealToggle() {
-    this.practiceStore.setShowReveal(true);
+  practiceWholeListAgain() {
+    if (this.currentList()) {
+      this.practiceStore.resetSession(this.currentList()!);
+    }
+  }
+
+  getWordChipClass(attempt: WordAttempt): string {
+    if (attempt.correctOnFirstTry) {
+      return 'correct-chip';
+    } else if (attempt.isComplete && !attempt.wasSkipped && !attempt.wasRevealed) {
+      return 'retried-chip';
+    } else {
+      return 'missed-chip';
+    }
+  }
+
+  revealAnswer() {
+    this.practiceStore.revealAnswer();
+    // Show the answer in the input field
+    this.practiceForm.patchValue({ answer: this.currentWord() });
+    // Show reveal dialog
+    this.showWordResultDialog(false, this.currentWord() || '', true);
   }
 
   private replaceWordWithBlank(sentence: string, targetWord: string): string {
@@ -193,5 +252,22 @@ export class PracticeComponent {
 
   private escapeRegex(word: string): string {
     return word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
+
+  private showWordResultDialog(isCorrect: boolean, word: string, wasRevealed: boolean = false) {
+    const dialogRef = this.dialog.open(WordResultDialogComponent, {
+      data: {
+        isCorrect,
+        word,
+        wasRevealed,
+        showConfetti: isCorrect && !wasRevealed
+      } as WordResultDialogData,
+      disableClose: true,
+      panelClass: 'word-result-dialog'
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.nextWord();
+    });
   }
 }

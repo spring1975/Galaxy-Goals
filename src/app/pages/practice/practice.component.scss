@@ -79,13 +79,217 @@
     min-width: 5rem;
   }
 }
+// Enhanced styling for attempts functionality
+.answer-input {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+// Shake animation for incorrect answers
+.shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-3px); }
+  75% { transform: translateX(3px); }
+}
+
+.actions-row {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.feedback-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin: 1rem 0;
+  min-height: 60px; // Prevent layout shift
+}
+
+.hint-section {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.reveal-section {
+  margin-top: 0.5rem;
+}
+
+.footer-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+// Responsive design improvements
 @media (max-width: 600px) {
   .practice-container {
     padding: 16px;
   }
-  .practice-header,
-  .practice-footer {
+
+  .practice-header {
     flex-direction: column;
     align-items: flex-start;
   }
+
+  .practice-footer {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .footer-stats {
+    text-align: center;
+  }
+
+  .word-tools {
+    gap: 1rem;
+  }
+}
+
+// Results screen styling
+.results-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem 0;
+}
+
+.results-header {
+  text-align: center;
+}
+
+.big-accuracy {
+  font-size: 4rem;
+  font-weight: bold;
+  color: var(--mat-primary-main);
+  line-height: 1;
+}
+
+.accuracy-label {
+  font-size: 1.2rem;
+  margin-top: 0.5rem;
+  opacity: 0.8;
+}
+
+.results-breakdown {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 120px;
+}
+
+.stat-number {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--mat-primary-main);
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  text-align: center;
+}
+
+.words-summary {
+  width: 100%;
+  max-width: 600px;
+}
+
+.words-summary h3 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.word-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.word-chips mat-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.correct-chip {
+  background-color: var(--mat-success-main, #4caf50) !important;
+  color: white !important;
+}
+
+.retried-chip {
+  background-color: var(--mat-warn-main, #ff9800) !important;
+  color: white !important;
+}
+
+.missed-chip {
+  background-color: var(--mat-error-main, #f44336) !important;
+  color: white !important;
+}
+
+.results-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+
+// Custom toast styling
+:host ::ng-deep .incorrect-toast {
+  background-color: var(--mat-warn-main, #ff5722) !important;
+  color: white !important;
+  font-weight: 500;
+
+  .mat-mdc-snack-bar-label {
+    color: white !important;
+  }
+}
+
+// Accessibility: respect reduced motion preference
+@media (prefers-reduced-motion: reduce) {
+  .shake {
+    animation: none;
+  }
+}
+
+// Responsive design for results
+@media (max-width: 600px) {
+  .big-accuracy {
+    font-size: 3rem;
+  }
+
+  .results-breakdown {
+    gap: 1rem;
+  }
+
+  .stat-item {
+    min-width: 80px;
+  }
+
+  .stat-number {
+    font-size: 1.5rem;
+  }
+}
+
+
+glx-confetti-burst {
+  position: absolute;
+  z-index: 2000; // Ensure it appears above other content
 }
