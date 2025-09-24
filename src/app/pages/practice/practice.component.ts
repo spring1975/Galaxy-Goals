@@ -193,6 +193,8 @@ export class PracticeComponent {
     } else {
       this.practiceStore.advanceToNextWord();
       this.practiceForm.reset();
+      // Speak the next word automatically after loading
+      this.speakWord();
     }
   }
 

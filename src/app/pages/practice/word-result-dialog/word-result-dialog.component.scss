@@ -1,21 +1,18 @@
-.dialog-content {
-  text-align: center;
-  padding: 2rem;
-  min-width: 300px;
+.mat-mdc-dialog-title {
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0 0;
 }
 
-.result-message {
-  margin: 2rem 0;
-}
-
-.result-message h2 {
+.mat-mdc-dialog-content {
   margin: 1rem 0;
   font-size: 1.5rem;
+  max-height: none;
+  overflow: visible;
 }
 
-.result-message p {
-  margin: 0.5rem 0;
-  opacity: 0.8;
+p {
+  margin: 1rem 0;
 }
 
 .success-icon {
@@ -30,12 +27,4 @@
   width: 3rem;
   height: 3rem;
   color: var(--mat-accent-main);
-}
-
-.dialog-actions {
-  margin-top: 2rem;
-}
-
-.dialog-actions button {
-  min-width: 120px;
 }

@@ -123,18 +123,8 @@
       </div>
     </form>
     <div class="feedback-section">
-      @if (feedback() === 'correct' && !currentWordAttempt()?.wasRevealed) {
-      <mat-chip color="primary" selected aria-live="polite">
-        Nice! '{{currentWord()}}' is correct.
-      </mat-chip>
-      }
-      @else if (feedback() === 'correct' && currentWordAttempt()?.wasRevealed) {
-      <mat-chip color="accent" selected aria-live="polite">
-        The answer was '{{currentWord()}}'. Let's keep practicing!
-      </mat-chip>
-      }
-
       @if (shouldShowReveal() && feedback() === 'incorrect') {
+        {{feedback() }}
       <div class="reveal-section">
         <button mat-stroked-button color="accent" (click)="revealAnswer()">
           Reveal answer?
