@@ -89,6 +89,7 @@
           </button>
           <span class="label">Slow</span>
         </div>
+        @if (mlcConfigService.isEnabled()) {
         <div class="labeled-fab">
           <button mat-mini-fab color="accent" aria-label="Use in Sentence" type="button" (click)="generateSentence()"
             [disabled]="isGenerating() || sentenceService.isBusy()">
@@ -96,6 +97,7 @@
           </button>
           <span class="label">Sentence</span>
         </div>
+        }
       </div>
       @if (shouldShowHint()) {
       <div class="hint-section">

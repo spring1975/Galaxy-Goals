@@ -2,6 +2,27 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.17.
 
+## Features
+
+### MLC (Machine Learning Compilation) Integration
+
+GalaxyGoals includes an optional AI-powered sentence generation feature using WebLLM/MLC. This feature is **disabled by default** to optimize performance on mobile devices.
+
+**To enable MLC:**
+- Add `?mlc=true` to any URL (e.g., `http://localhost:4200/?mlc=true`)
+- Visit the `/mlc-demo` page and toggle the feature on
+- See [MLC-CONFIG.md](./MLC-CONFIG.md) for detailed configuration options
+
+**Why disabled by default:**
+- Mobile devices may struggle with the ~500MB+ model downloads
+- Requires 2-4GB RAM for optimal performance
+- Better UX for the majority of users on mobile devices
+
+**Bundle size optimization:**
+- When disabled: MLC libraries (~800KB-1MB) are NOT included in the bundle
+- When enabled: MLC libraries are lazy-loaded only when you initialize the engine
+- Main bundle stays minimal for users who don't need AI features
+
 ## Development server
 
 To start a local development server, run:

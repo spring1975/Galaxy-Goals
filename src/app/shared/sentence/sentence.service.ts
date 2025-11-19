@@ -5,18 +5,20 @@ import {
   Inject,
   InjectionToken,
 } from '@angular/core';
-import {
-  CreateMLCEngine,
-  MLCEngine,
-  ChatCompletionMessageParam,
-} from '@mlc-ai/web-llm';
+import { MlcPreloadService } from '../mlc/mlc-preload.service';
+import { ModelConfig } from '../mlc/model-config';
+
+// Type definitions for MLC (to avoid bundling the library)
+type MLCEngine = any;
+type ChatCompletionMessageParam = any;
+type InitProgressReport = any;
 
 // String constants
 
 const EMPTY_STRING = '';
 const AUTO_INIT_REJECT_MESSAGE = 'autoInit is false';
 const ENGINE_INIT_FAIL = 'Engine initialization failed:';
-const MODEL_ID = 'Llama-3.1-8B-Instruct-q4f32_1-MLC';
+// MODEL_ID is now dynamically selected based on device capabilities
 const LLM_INIT_FAIL_MESSAGE = 'LLM failed to initialize.';
 const ERROR_GENERATING_SENTENCE = 'Error generating sentence.';
 
@@ -30,15 +32,20 @@ export const SENTENCE_SERVICE_CONFIG =
 
 @Injectable({ providedIn: 'root' })
 export class SentenceService {
-  private modelId = MODEL_ID;
   private engine: MLCEngine | null = null;
   private initPromise: Promise<void>;
+  private modelConfig: ModelConfig | null = null;
   public isInitialized: WritableSignal<boolean> = signal(false);
   public isBusy: WritableSignal<boolean> = signal(false);
+  public initProgress: WritableSignal<number> = signal(0);
+  public initMessage: WritableSignal<string> = signal('');
 
   private config: SentenceServiceConfig;
 
-  constructor(@Inject(SENTENCE_SERVICE_CONFIG) config?: SentenceServiceConfig) {
+  constructor(
+    @Inject(SENTENCE_SERVICE_CONFIG) config: SentenceServiceConfig | undefined,
+    private mlcPreloadService: MlcPreloadService
+  ) {
     this.config = config ?? {};
     if (this.config.autoInit) {
       this.initPromise = this.initEngine().catch((error) => {
@@ -80,12 +87,40 @@ export class SentenceService {
 
   private async initEngine(): Promise<void> {
     try {
-      this.engine = await CreateMLCEngine(this.modelId);
+      this.initMessage.set('Preparing model...');
+      this.initProgress.set(0);
+
+      // Wait for preload to complete and get model config
+      this.modelConfig = await this.mlcPreloadService.startPreload();
+
+      this.initMessage.set('Loading WebLLM library...');
+      this.initProgress.set(30);
+
+      // Lazy load the MLC library only when needed
+      const { CreateMLCEngine } = await import('@mlc-ai/web-llm');
+
+      this.initMessage.set('Initializing WebLLM engine...');
+      this.initProgress.set(50);
+
+      // Initialize engine with progress callback
+      this.engine = await CreateMLCEngine(
+        this.modelConfig.manifest.model_id,
+        {
+          initProgressCallback: (progress: InitProgressReport) => {
+            this.initProgress.set(50 + (progress.progress * 50));
+            this.initMessage.set(progress.text || 'Loading model...');
+          }
+        }
+      );
+
       this.isInitialized.set(true);
-      // Async function automatically returns Promise.resolve() when it completes successfully
+      this.initProgress.set(100);
+      this.initMessage.set('Ready');
+
     } catch (error) {
       console.error('Failed to initialize WebLLM engine:', error);
       this.isInitialized.set(false);
+      this.initMessage.set('Initialization failed');
       throw error;
     }
     console.log('WebLLM engine initialized successfully.');
@@ -108,14 +143,19 @@ export class SentenceService {
           - Always generate exactly one G-rated sentence using the given word.
           - Sentence should be 8–14 words.
           - Keep the vocabulary simple and kid-appropriate.
+          - Keep your response concise, just the sentence.
         `,
       },
       { role: 'user', content: prompt },
     ];
     try {
-      const reply = await this.engine!.chat.completions.create({ messages });
+      const reply = await this.engine!.chat.completions.create({
+        messages,
+        max_tokens: 50, // Keep responses short for speed
+        temperature: 0.7
+      });
       const sentence = reply.choices[0]?.message?.content || EMPTY_STRING;
-      return sentence;
+      return sentence.trim();
     } catch (error) {
       // ...existing code...
       return ERROR_GENERATING_SENTENCE;

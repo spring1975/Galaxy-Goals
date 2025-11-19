@@ -14,7 +14,12 @@
     "build:prod": "ng build --configuration production --base-href=/Galaxy-Goals/",
     "build:local": "ng build --configuration production --base-href=/",
     "deploy": "ng deploy --base-href=/Galaxy-Goals/",
-    "pwa:publish": "npm run build:prod && npx angular-cli-ghpages --dir=dist/galaxy-goals"
+    "pwa:publish": "npm run build:prod && npx angular-cli-ghpages --dir=dist/galaxy-goals",
+    "mlc:setup": "pwsh -ExecutionPolicy Bypass -File ./scripts/setup-mlc.ps1",
+    "mlc:setup:1b": "pwsh -ExecutionPolicy Bypass -File ./scripts/setup-mlc.ps1 -Model 1b",
+    "mlc:setup:3b": "pwsh -ExecutionPolicy Bypass -File ./scripts/setup-mlc.ps1 -Model 3b",
+    "mlc:setup:8b": "pwsh -ExecutionPolicy Bypass -File ./scripts/setup-mlc.ps1 -Model 8b",
+    "mlc:setup:all": "pwsh -ExecutionPolicy Bypass -File ./scripts/setup-mlc.ps1 -Model all"
   },
   "private": true,
   "dependencies": {

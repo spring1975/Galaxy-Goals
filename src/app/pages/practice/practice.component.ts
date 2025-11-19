@@ -8,6 +8,7 @@ import {
   SentenceService,
   SENTENCE_SERVICE_CONFIG,
 } from 'src/app/shared/sentence/sentence.service';
+import { MlcConfigService } from 'src/app/shared/mlc/mlc-config.service';
 import { Router, RouterModule } from '@angular/router';
 import { Subject } from 'rxjs';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -54,6 +55,7 @@ import { ResultsDialogComponent, ResultsDialogData } from './results-dialog.comp
 })
 export class PracticeComponent {
   public sentenceService = inject(SentenceService);
+  public mlcConfigService = inject(MlcConfigService);
   private router = inject(Router);
   private snackBar = inject(MatSnackBar);
   private dialog = inject(MatDialog);

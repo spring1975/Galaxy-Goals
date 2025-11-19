@@ -5,16 +5,20 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FromNowPipe } from 'src/app/shared/pipes/from-now.pipe';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SpellingListSignalStore, SpellingList } from 'src/app/stores/spelling-list.signalstore';
 import dayjs from 'dayjs';
 import { SpellingListDialogComponent } from './spelling-list-dialog/spelling-list-dialog.component';
+import { ConfirmDeleteDialogComponent } from './confirm-delete-dialog/confirm-delete-dialog.component';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'glxg-home',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule, MatProgressSpinnerModule, FromNowPipe],
+  imports: [CommonModule, MatCardModule,
+    MatButtonModule, MatIconModule, MatProgressSpinnerModule,
+    FromNowPipe, RouterModule, MatDialogModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -74,7 +78,19 @@ export class HomeComponent implements OnInit {
   }
 
   deleteList(id: string): void {
-    this.store.deleteList(id);
+    const list = this.store.getLists().find(l => l.id === id);
+    const listName = list?.name || 'this spelling list';
+
+    const dialogRef = this.dialog.open(ConfirmDeleteDialogComponent, {
+      data: { listName },
+      width: '400px'
+    });
+
+    dialogRef.afterClosed().subscribe(confirmed => {
+      if (confirmed) {
+        this.store.deleteList(id);
+      }
+    });
   }
 
   addList(): void {

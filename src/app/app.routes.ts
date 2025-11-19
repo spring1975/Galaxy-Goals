@@ -36,6 +36,10 @@ export const routes: Routes = [
     loadComponent: () => import('src/app/pages/theme-demo/theme-demo.component').then(m => m.ThemeDemoComponent)
   },
   {
+    path: 'mlc-demo',
+    loadComponent: () => import('src/app/pages/mlc-demo/mlc-demo.component').then(m => m.MlcDemoComponent)
+  },
+  {
     path: '**',
     redirectTo: '/home'
   }
