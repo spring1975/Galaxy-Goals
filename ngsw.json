@@ -1,0 +1,174 @@
+{
+  "configVersion": 1,
+  "timestamp": 1763563799214,
+  "index": "/Galaxy-Goals/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/Galaxy-Goals/197.2f03636e330e79a2.js",
+        "/Galaxy-Goals/20.b407fddbc63ca465.js",
+        "/Galaxy-Goals/284.930b3084e0caa79b.js",
+        "/Galaxy-Goals/422.d19f927e13cda395.js",
+        "/Galaxy-Goals/43.0aba9458c1357b72.js",
+        "/Galaxy-Goals/434.b44a0e3a2a4b0456.js",
+        "/Galaxy-Goals/529.503f8ef919a3cc08.js",
+        "/Galaxy-Goals/655.48cdbe382429f391.js",
+        "/Galaxy-Goals/673.7fa82e8ef18e22c5.js",
+        "/Galaxy-Goals/73.eece18d7541d0e91.js",
+        "/Galaxy-Goals/789.5d2a3440534ab876.js",
+        "/Galaxy-Goals/844.f5d1f57655274c7b.js",
+        "/Galaxy-Goals/963.06140b99af51ee3f.js",
+        "/Galaxy-Goals/favicon.ico",
+        "/Galaxy-Goals/index.html",
+        "/Galaxy-Goals/main.f3b9c3eb7ef32dea.js",
+        "/Galaxy-Goals/polyfills.72647c47fc7d7343.js",
+        "/Galaxy-Goals/runtime.f6533da1afa6fc5f.js",
+        "/Galaxy-Goals/styles.a6830b5e5476f75e.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/Galaxy-Goals/assets/hills.svg",
+        "/Galaxy-Goals/assets/homepage.png",
+        "/Galaxy-Goals/assets/icons/icon-192x192.png",
+        "/Galaxy-Goals/assets/icons/icon-512x512.png",
+        "/Galaxy-Goals/assets/manifest.webmanifest",
+        "/Galaxy-Goals/assets/mlc/1b-q4f32_1/manifest.json",
+        "/Galaxy-Goals/assets/mlc/1b-q4f32_1/placeholder.js",
+        "/Galaxy-Goals/assets/mlc/3b-q4f32_1/manifest.json",
+        "/Galaxy-Goals/assets/mlc/3b-q4f32_1/mlc-chat-config.json",
+        "/Galaxy-Goals/assets/mlc/3b-q4f32_1/placeholder.js",
+        "/Galaxy-Goals/assets/mlc/3b-q4f32_1/tokenizer.json",
+        "/Galaxy-Goals/assets/mlc/8b-q4f32_1/manifest.json",
+        "/Galaxy-Goals/assets/mlc/8b-q4f32_1/placeholder.js",
+        "/Galaxy-Goals/assets/mlc/README.md",
+        "/Galaxy-Goals/assets/planet.svg",
+        "/Galaxy-Goals/assets/planet2.svg",
+        "/Galaxy-Goals/assets/planet3.svg",
+        "/Galaxy-Goals/assets/rocket1.svg",
+        "/Galaxy-Goals/assets/screenshots/desktop.png",
+        "/Galaxy-Goals/assets/screenshots/mobile.png",
+        "/Galaxy-Goals/assets/star.svg"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [
+    {
+      "name": "mlc-models-8b",
+      "patterns": [
+        "\\/assets\\/mlc\\/8b-q4f32_1\\/.*"
+      ],
+      "strategy": "performance",
+      "maxSize": 50,
+      "maxAge": 2592000000,
+      "timeoutMs": 600000,
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "version": 1
+    },
+    {
+      "name": "mlc-models-3b",
+      "patterns": [
+        "\\/assets\\/mlc\\/3b-q4f32_1\\/.*"
+      ],
+      "strategy": "performance",
+      "maxSize": 30,
+      "maxAge": 2592000000,
+      "timeoutMs": 600000,
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "version": 1
+    },
+    {
+      "name": "mlc-models-1b",
+      "patterns": [
+        "\\/assets\\/mlc\\/1b-q4f32_1\\/.*"
+      ],
+      "strategy": "performance",
+      "maxSize": 20,
+      "maxAge": 2592000000,
+      "timeoutMs": 600000,
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "version": 1
+    }
+  ],
+  "hashTable": {
+    "/Galaxy-Goals/197.2f03636e330e79a2.js": "9ce51cd4f511bfbb1b4442c2a67577d3a960711c",
+    "/Galaxy-Goals/20.b407fddbc63ca465.js": "bd3d24326aa56074a5228eac6f8dab43ac5ed625",
+    "/Galaxy-Goals/284.930b3084e0caa79b.js": "4501a72350451d0cc31d49a299deb8b1f373b638",
+    "/Galaxy-Goals/422.d19f927e13cda395.js": "40f6447b3ff58979e2a4d5010b8c4b6086cdbe2e",
+    "/Galaxy-Goals/43.0aba9458c1357b72.js": "c3583a01156b59a0221826f3ee889ea5a9dd585a",
+    "/Galaxy-Goals/434.b44a0e3a2a4b0456.js": "8a06ac8f84d5f42ae4e3f00784c6817abc0f842a",
+    "/Galaxy-Goals/529.503f8ef919a3cc08.js": "9facf704fc0f257c01b62a5099f389e10b191854",
+    "/Galaxy-Goals/655.48cdbe382429f391.js": "c6f55ac0bf4113675e14c8d49f98b9effe31223b",
+    "/Galaxy-Goals/673.7fa82e8ef18e22c5.js": "ce8c10a20edf1a937deebd548bd96e9df18a0058",
+    "/Galaxy-Goals/73.eece18d7541d0e91.js": "3c89f5e808bd54a13ffc5a94dd11d38113258ba4",
+    "/Galaxy-Goals/789.5d2a3440534ab876.js": "deace9984d34857bae1efba149f8397a895a6076",
+    "/Galaxy-Goals/844.f5d1f57655274c7b.js": "c6bb10234f3a48a50ede0474e7886ebe07859d99",
+    "/Galaxy-Goals/963.06140b99af51ee3f.js": "1b758ae46dbb0d6ad389f4239d8431d2c38e5160",
+    "/Galaxy-Goals/assets/hills.svg": "06d46b47078bbc3c6868cd20642a8099489963ae",
+    "/Galaxy-Goals/assets/homepage.png": "2468c5bc860885357b34e8e2c7bb30fb50f690e4",
+    "/Galaxy-Goals/assets/icons/icon-192x192.png": "cb4acca5af5c037bc3e78846ac38f7884f71db0f",
+    "/Galaxy-Goals/assets/icons/icon-512x512.png": "e8a632a732368aac177f86698929b996ad2af51d",
+    "/Galaxy-Goals/assets/manifest.webmanifest": "57e3f7c4f78ceb28df66921e6ce63c1213bc9119",
+    "/Galaxy-Goals/assets/mlc/1b-q4f32_1/manifest.json": "cdb800a8d0481a03087d81936a976685e8a84fd1",
+    "/Galaxy-Goals/assets/mlc/1b-q4f32_1/placeholder.js": "ab5b4b6bf97fbc1990b950fe3835fce7034bfe4a",
+    "/Galaxy-Goals/assets/mlc/3b-q4f32_1/manifest.json": "b3518e55cc12a2458afd677cdd33b6283d31f85c",
+    "/Galaxy-Goals/assets/mlc/3b-q4f32_1/mlc-chat-config.json": "7d6fdc0b66836e61ba819a1e2037f33c8483f0c5",
+    "/Galaxy-Goals/assets/mlc/3b-q4f32_1/placeholder.js": "ab5b4b6bf97fbc1990b950fe3835fce7034bfe4a",
+    "/Galaxy-Goals/assets/mlc/3b-q4f32_1/tokenizer.json": "2fc3a4b810e5f516ec42b33be5fff0e1625eda21",
+    "/Galaxy-Goals/assets/mlc/8b-q4f32_1/manifest.json": "880c9992f198a20dada556b04600937334e79ad3",
+    "/Galaxy-Goals/assets/mlc/8b-q4f32_1/placeholder.js": "ab5b4b6bf97fbc1990b950fe3835fce7034bfe4a",
+    "/Galaxy-Goals/assets/mlc/README.md": "efb4136a1d713274c0dd1f332235834b9b464274",
+    "/Galaxy-Goals/assets/planet.svg": "af1ac89b6d1641aa168160ed6f33cc9d5a385f98",
+    "/Galaxy-Goals/assets/planet2.svg": "c63ed7425ac3e3e7d7598feb75373d89b7110ec9",
+    "/Galaxy-Goals/assets/planet3.svg": "76e939c55912952f81774216b8b23d30eb790da4",
+    "/Galaxy-Goals/assets/rocket1.svg": "3965c2b6af513d40907fb72eb85c366cff6461ed",
+    "/Galaxy-Goals/assets/screenshots/desktop.png": "aac9ce9327754ee42005c6d771e7623009d5b784",
+    "/Galaxy-Goals/assets/screenshots/mobile.png": "f0a07a3587162dd6f3f24a06863f4eea1054f2ff",
+    "/Galaxy-Goals/assets/star.svg": "e32c66473bbeae14d13b62ac5237dfddf5fce637",
+    "/Galaxy-Goals/favicon.ico": "2bfa35ae20749f962da696f76ffb04767581504b",
+    "/Galaxy-Goals/index.html": "aef930f12dca0ac304146f3a178b4c62599231c5",
+    "/Galaxy-Goals/main.f3b9c3eb7ef32dea.js": "e1108433821cf3368fc6cb939e49ef370debb67c",
+    "/Galaxy-Goals/polyfills.72647c47fc7d7343.js": "355b36de4395d4f85de1e6e91ccad7ea655b206d",
+    "/Galaxy-Goals/runtime.f6533da1afa6fc5f.js": "fa9ac0390e5bf8beb769579d75ecbe9dd6175581",
+    "/Galaxy-Goals/styles.a6830b5e5476f75e.css": "b2b8813bcfeea29d2d1915ef5f56f586f341bc70"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ],
+  "navigationRequestStrategy": "performance"
+}

@@ -1,0 +1,12 @@
+{
+  "model_id": "Llama-3.2-1B-Instruct-q4f32_1-MLC",
+  "model_lib_url": "./assets/mlc/1b-q4f32_1/Llama-3.2-1B-Instruct-q4f32_1-MLC-lib.wasm",
+  "model_url": "./assets/mlc/1b-q4f32_1/",
+  "shards": [
+    "params_shard_0.bin",
+    "params_shard_1.bin"
+  ],
+  "total_size": "0.8GB",
+  "memory_requirements": "1.5GB",
+  "recommended_for": "chromebook-lite"
+}

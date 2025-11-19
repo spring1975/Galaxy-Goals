@@ -1,0 +1,18 @@
+{
+  "model_id": "Llama-3.1-8B-Instruct-q4f32_1-MLC",
+  "model_lib_url": "./assets/mlc/8b-q4f32_1/Llama-3.1-8B-Instruct-q4f32_1-MLC-lib.wasm",
+  "model_url": "./assets/mlc/8b-q4f32_1/",
+  "shards": [
+    "params_shard_0.bin",
+    "params_shard_1.bin",
+    "params_shard_2.bin",
+    "params_shard_3.bin",
+    "params_shard_4.bin",
+    "params_shard_5.bin",
+    "params_shard_6.bin",
+    "params_shard_7.bin"
+  ],
+  "total_size": "4.7GB",
+  "memory_requirements": "6GB",
+  "recommended_for": "desktop"
+}
